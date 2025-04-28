@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import "./styles/theme.css";
+@import "./styles/animations.css";
+
+/* Base styles */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Override Tailwind classes with our custom colors */
+.bg-light-bg {
+  background-color: var(--color-bg) !important;
+}
+.text-light-text-primary {
+  color: var(--color-text-primary) !important;
+}
+.text-light-text-secondary {
+  color: var(--color-text-secondary) !important;
+}
+.bg-light-primary {
+  background-color: var(--color-primary) !important;
+}
+.text-light-primary {
+  color: var(--color-primary) !important;
+}
+.border-light-border {
+  border-color: var(--color-border) !important;
+}
+
+/* Dark mode overrides */
+.dark .bg-dark-bg {
+  background-color: var(--color-bg) !important;
+}
+.dark .bg-dark-card {
+  background-color: var(--color-card) !important;
+}
+.dark .text-dark-text-primary {
+  color: var(--color-text-primary) !important;
+}
+.dark .text-dark-text-secondary {
+  color: var(--color-text-secondary) !important;
+}
+.dark .bg-dark-primary {
+  background-color: var(--color-primary) !important;
+}
+.dark .text-dark-primary {
+  color: var(--color-primary) !important;
+}
+.dark .border-dark-border {
+  border-color: var(--color-border) !important;
+}
