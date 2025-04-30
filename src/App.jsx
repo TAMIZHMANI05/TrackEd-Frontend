@@ -5,6 +5,9 @@ import CGPATracking from "./pages/features/CGPATracking";
 import ProjectManagement from "./pages/features/ProjectManagement";
 import AIInsights from "./pages/features/AIInsights";
 import { ThemeProvider } from "./context/ThemeContext";
+import Footer from "./components/Footer";
+import ScrollToTopButton from "./components/ScrollToTopButton";
+import ScrollToTopOnNavigate from "./components/ScrollToTopOnNavigate";
 
 function App() {
   return (
@@ -12,6 +15,8 @@ function App() {
       <Router>
         <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
           <Navbar />
+          <ScrollToTopOnNavigate />
+          <ScrollToTopButton />
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/features/cgpa-tracking" element={<CGPATracking />} />
@@ -21,6 +26,7 @@ function App() {
             />
             <Route path="/features/ai-insights" element={<AIInsights />} />
           </Routes>
+          <Footer />
         </div>
       </Router>
     </ThemeProvider>

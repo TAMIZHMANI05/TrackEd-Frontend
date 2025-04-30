@@ -1,26 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import logo from "../assets/images/TrackEd-Logo.svg";
 import useScrollPosition from "../hooks/useScrollPosition";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Navbar = () => {
   const isScrolled = useScrollPosition();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownTimeout = useRef();
+  const location = useLocation();
 
   const navigationItems = [
-    {
-      name: "Features",
-      isDropdown: true,
-      items: [
-        { name: "CGPA Tracking", path: "/features/cgpa-tracking" },
-        { name: "Project Management", path: "/features/project-management" },
-        { name: "AI Insights", path: "/features/ai-insights" },
-      ],
-    },
-    { name: "Resources", path: "/resources" },
+    // {
+    //   name: "Features",
+    //   isDropdown: true,
+    //   items: [
+    //     { name: "CGPA Tracking", path: "/features/cgpa-tracking" },
+    //     { name: "Project Management", path: "/features/project-management" },
+    //     { name: "AI Insights", path: "/features/ai-insights" },
+    //   ],
+    // },
+    // { name: "Resources", path: "/resources" },
+    { name: "Home", path: "/" },
     { name: "About", path: "/about" },
+    { name: "CGPA Tracking", path: "/features/cgpa-tracking" },
+    { name: "Project Management", path: "/features/project-management" },
+    { name: "AI Insights", path: "/features/ai-insights" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -79,11 +85,30 @@ const Navbar = () => {
             <div className="flex items-center space-x-8">
               {navigationItems.map((item) =>
                 item.isDropdown ? (
-                  <div key={item.name} className="relative">
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={() => {
+                      clearTimeout(dropdownTimeout.current);
+                      setIsDropdownOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      dropdownTimeout.current = setTimeout(
+                        () => setIsDropdownOpen(false),
+                        150
+                      );
+                    }}
+                  >
                     <button
-                      className="flex items-center space-x-1 text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary transition-colors"
-                      onMouseEnter={() => setIsDropdownOpen(true)}
-                      onMouseLeave={() => setIsDropdownOpen(false)}
+                      className={`nav-underline flex items-center space-x-1 transition-colors px-2 py-1 rounded-md
+                        ${
+                          item.items.some(
+                            (sub) => location.pathname === sub.path
+                          )
+                            ? "text-light-primary dark:text-dark-primary font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
+                            : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10"
+                        }
+                      `}
                     >
                       <span>{item.name}</span>
                       <svg
@@ -111,18 +136,20 @@ const Navbar = () => {
                           ? "opacity-100 scale-100 translate-y-0"
                           : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
                       }`}
-                      onMouseEnter={() => setIsDropdownOpen(true)}
-                      onMouseLeave={() => setIsDropdownOpen(false)}
                     >
                       <div className="py-2">
                         {item.items.map((subItem, index) => (
                           <Link
                             key={subItem.name}
                             to={subItem.path}
-                            className="block px-4 py-2 text-light-text-primary dark:text-dark-text-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10 transition-colors duration-150"
-                            style={{
-                              transitionDelay: `${index * 50}ms`,
-                            }}
+                            className={`nav-underline block px-4 py-2 rounded-md transition-colors duration-150
+                              ${
+                                location.pathname === subItem.path
+                                  ? "text-light-primary dark:text-dark-primary font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
+                                  : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10"
+                              }
+                            `}
+                            style={{ transitionDelay: `${index * 50}ms` }}
                           >
                             {subItem.name}
                           </Link>
@@ -134,7 +161,13 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className="text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary transition-colors"
+                    className={`nav-underline transition-colors px-2 py-1 rounded-md
+                      ${
+                        location.pathname === item.path
+                          ? "text-light-primary dark:text-dark-primary font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
+                          : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10"
+                      }
+                    `}
                   >
                     {item.name}
                   </Link>
@@ -192,7 +225,13 @@ const Navbar = () => {
                         key={subItem.name}
                         to={subItem.path}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="block text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary"
+                        className={`nav-underline block text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary
+                          ${
+                            location.pathname === subItem.path
+                              ? "font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
+                              : ""
+                          }
+                        `}
                       >
                         {subItem.name}
                       </Link>
@@ -204,7 +243,13 @@ const Navbar = () => {
                   key={item.name}
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary"
+                  className={`nav-underline block text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary
+                    ${
+                      location.pathname === item.path
+                        ? "font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
+                        : ""
+                    }
+                  `}
                 >
                   {item.name}
                 </Link>

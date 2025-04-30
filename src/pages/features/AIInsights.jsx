@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import AiInsights from "../../assets/images/AI-Insights.svg";
 
 const AIInsights = () => {
   return (
@@ -26,7 +27,7 @@ const AIInsights = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="space-y-6">
+          <div className="space-y-6 order-1">
             <h1 className="text-4xl font-bold text-light-text-primary dark:text-dark-text-primary">
               AI Insights
               <span className="block text-light-primary dark:text-dark-primary text-xl mt-2">
@@ -134,41 +135,7 @@ const AIInsights = () => {
 
           {/* Illustration */}
           <div className="relative">
-            <svg
-              className="w-full h-auto"
-              viewBox="0 0 400 300"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                className="text-light-primary dark:text-dark-primary"
-                fill="currentColor"
-                d="M200 50l100 50-100 50-100-50z"
-              />
-              <path
-                className="text-light-secondary dark:text-dark-secondary"
-                fill="currentColor"
-                d="M100 100v100l100 50v-100z"
-              />
-              <path
-                className="text-light-accent dark:text-dark-accent"
-                fill="currentColor"
-                d="M300 100v100l-100 50v-100z"
-              />
-              <circle
-                className="text-white dark:text-dark-card"
-                fill="currentColor"
-                cx="200"
-                cy="150"
-                r="20"
-              />
-              <path
-                className="text-light-primary dark:text-dark-primary"
-                fill="currentColor"
-                strokeWidth="2"
-                d="M190 150a10 10 0 0120 0 10 10 0 01-20 0z"
-              />
-            </svg>
+            <img src={AiInsights} alt="" />
             <div className="absolute inset-0 bg-gradient-to-br from-light-primary/20 to-light-accent/20 dark:from-dark-primary/20 dark:to-dark-accent/20 rounded-lg filter blur-3xl opacity-50"></div>
           </div>
         </div>

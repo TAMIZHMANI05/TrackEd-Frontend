@@ -66,10 +66,13 @@ const FeatureCard = ({ feature, index, className }) => {
 
 const Landing = () => {
   const [featuresSectionRef, isFeaturesInView] = useInView({
-    threshold: 0.2,
+    threshold: 0.1,
   });
   const [quoteSectionRef, isQuoteInView] = useInView({
-    threshold: 0.2,
+    threshold: 0.1,
+  });
+  const [actionSectionRef, isActionInView] = useInView({
+    threshold: 0.1,
   });
 
   const features = [
@@ -144,33 +147,33 @@ const Landing = () => {
         {/* Main Content Container */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Content Wrapper */}
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-12 sm:py-20 px-30">
+          <div className="flex flex-col lg:flex-row items-center justify-between py-8 sm:py-16 lg:py-20">
             {/* Text Content */}
             <div
-              className="w-full lg:w-1/2 space-y-6 text-center lg:text-left opacity-0 animate-fade-in-up"
+              className="w-full lg:w-1/2 space-y-6 text-center lg:text-left opacity-0 animate-fade-in-up pt-8 lg:pt-0  sm:pl-15"
               style={{ animationDelay: "200ms" }}
             >
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary">
                 Your Academic
-                <span className="block text-light-primary dark:text-dark-primary mt-2">
+                <span className="block text-light-primary dark:text-dark-primary mt-2 sm:mt-3">
                   Journey Simplified
                 </span>
               </h1>
-              <p className="text-lg leading-8 text-light-text-secondary dark:text-dark-text-secondary max-w-2xl mx-auto lg:mx-0">
+              <p className="text-base sm:text-lg md:text-xl leading-7 sm:leading-8 text-light-text-secondary dark:text-dark-text-secondary max-w-xl sm:max-w-2xl mx-auto lg:mx-0">
                 Accelerate your academic progress with AI-driven
                 insights—whether you're tracking CGPA, managing projects, or
                 aiming for better performance.
               </p>
-              <div className="flex items-center justify-center lg:justify-start gap-x-6">
+              <div className="flex items-center flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-x-6 pt-4">
                 <a
-                  href="/login"
-                  className="rounded-md bg-light-primary dark:bg-dark-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:scale-105 hover:bg-light-secondary dark:hover:bg-dark-secondary transition-all duration-200"
+                  href="/signin"
+                  className="w-full sm:w-auto rounded-md bg-light-primary dark:bg-dark-primary px-6 sm:px-4 py-3 sm:py-2.5 text-base sm:text-sm font-semibold text-white shadow-sm hover:scale-105 hover:bg-light-secondary dark:hover:bg-dark-secondary transition-all duration-200"
                 >
                   Get Started
                 </a>
                 <a
                   href="#features"
-                  className="text-sm font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary transition-all duration-200"
+                  className="w-full sm:w-auto text-base sm:text-sm text-center font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary transition-all duration-200"
                 >
                   Learn more <span aria-hidden="true">→</span>
                 </a>
@@ -179,16 +182,15 @@ const Landing = () => {
 
             {/* Hero Image */}
             <div
-              className="w-full lg:w-1/2 opacity-0 animate-fade-in-up"
+              className="w-full lg:w-1/2 opacity-0 animate-fade-in-up px-4 sm:px-6 lg:px-0"
               style={{ animationDelay: "400ms" }}
             >
-              <div className="relative max-w-lg mx-auto">
+              <div className="py-15 sm:py-0 relative max-w-sm sm:max-w-md lg:max-w-lg ml-auto flex items-center justify-center">
                 <img
                   src={heroImageLight}
                   alt="Academic dashboard visualization"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain max-w-[80%] sm:max-w-full"
                 />
-                {/* Decorative blur effect */}
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-light-primary/20 to-light-accent/20 dark:from-dark-primary/20 dark:to-dark-accent/20 rounded-lg blur-2xl opacity-50 group-hover:opacity-75 transition duration-500"></div>
               </div>
             </div>
@@ -227,10 +229,7 @@ const Landing = () => {
       </div>
 
       {/* Quote Section */}
-      <div
-        className="py-24 sm:py-32 bg-gradient-to-br from-light-primary/5 to-light-accent/5 dark:from-dark-primary/5 dark:to-dark-accent/5"
-        ref={quoteSectionRef}
-      >
+      <div className="py-24 sm:py-32 bg-gradient-to-br from-light-primary/5 to-light-accent/5 dark:from-dark-primary/5 dark:to-dark-accent/5">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div
             className={`mx-auto max-w-3xl text-center reveal ${
@@ -250,7 +249,7 @@ const Landing = () => {
                 itself."
               </p>
             </blockquote>
-            <div className="mt-8">
+            <div className="mt-8" ref={quoteSectionRef}>
               <p className="text-base font-semibold text-light-primary dark:text-dark-primary">
                 John Dewey
               </p>
@@ -259,17 +258,260 @@ const Landing = () => {
               </p>
             </div>
           </div>
-          {/* New Call to Action after the quote */}
-          <div className="mt-12 flex justify-center">
-            <a
-              href="/signup"
-              className="rounded-md bg-light-primary dark:bg-dark-primary px-6 py-3 text-lg font-semibold text-white shadow-md hover:bg-light-secondary dark:hover:bg-dark-secondary transition-all duration-200"
-            >
-              Join TrackEd Now
-            </a>
-          </div>
+          {/* Call to Action Section */}
         </div>
       </div>
+
+      {/* Action Section */}
+
+      <section className="relative z-10 overflow-hidden bg-light-primary  py-16 px-8 sm:px-18">
+        <div className="container py-10 sm:py-20">
+          <div className="-mx-4 flex flex-wrap items-center">
+            <div className="w-full px-4 lg:w-1/2">
+              <div className="text-center lg:text-left ">
+                <div
+                  className={`mb-10 lg:mb-0 reveal ${
+                    isActionInView ? "visible" : ""
+                  } `}
+                  ref={actionSectionRef}
+                >
+                  <h1 class="mt-0 mb-3 text-3xl font-bold leading-tight sm:text-4xl sm:leading-tight md:text-[40px] md:leading-tight text-white ">
+                    Take the Leap Towards Excellence
+                  </h1>
+                  <p className="text-white mt-4 text-lg sm:text-xl">
+                    Embrace the tools and insights to achieve your academic
+                    dreams. The future is yours to shape.
+                  </p>
+                  <p className="w-full text-base font-medium leading-relaxed sm:text-lg sm:leading-relaxed text-white"></p>
+                </div>
+              </div>
+            </div>
+            <div
+              class={`w-full px-4 lg:w-1/2 reveal ${
+                isActionInView ? "visible" : ""
+              }`}
+              ref={actionSectionRef}
+            >
+              <div class="text-center lg:text-right">
+                <a
+                  class="text-black font-semibold rounded-lg mx-auto inline-flex items-center justify-center bg-white py-4 px-9 hover:bg-opacity-90"
+                  href="/signin"
+                >
+                  Get Started Now!
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="absolute top-0 right-0 -z-10">
+          <svg
+            width="388"
+            height="250"
+            viewBox="0 0 388 220"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.05"
+              d="M203 -28.5L4.87819e-05 250.5L881.5 250.5L881.5 -28.5002L203 -28.5Z"
+              fill="url(#paint0_linear_971_6910)"
+            ></path>
+            <defs>
+              <linearGradient
+                id="paint0_linear_971_6910"
+                x1="60.5"
+                y1="111"
+                x2="287"
+                y2="111"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0.520507" stop-color="white"></stop>
+                <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span class="absolute top-0 right-0 -z-10">
+          <svg
+            width="324"
+            height="250"
+            viewBox="0 0 324 220"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.05"
+              d="M203 -28.5L4.87819e-05 250.5L881.5 250.5L881.5 -28.5002L203 -28.5Z"
+              fill="url(#paint0_linear_971_6911)"
+            ></path>
+            <defs>
+              <linearGradient
+                id="paint0_linear_971_6911"
+                x1="60.5"
+                y1="111"
+                x2="287"
+                y2="111"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0.520507" stop-color="white"></stop>
+                <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span class="absolute top-4 left-4 -z-10">
+          <svg
+            width="43"
+            height="56"
+            viewBox="0 0 43 56"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g opacity="0.5">
+              <circle
+                cx="40.9984"
+                cy="1.49626"
+                r="1.49626"
+                transform="rotate(90 40.9984 1.49626)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="27.8304"
+                cy="1.49626"
+                r="1.49626"
+                transform="rotate(90 27.8304 1.49626)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="14.6644"
+                cy="1.49626"
+                r="1.49626"
+                transform="rotate(90 14.6644 1.49626)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="1.49642"
+                cy="1.49626"
+                r="1.49626"
+                transform="rotate(90 1.49642 1.49626)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="40.9984"
+                cy="14.6642"
+                r="1.49626"
+                transform="rotate(90 40.9984 14.6642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="27.8304"
+                cy="14.6642"
+                r="1.49626"
+                transform="rotate(90 27.8304 14.6642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="14.6644"
+                cy="14.6642"
+                r="1.49626"
+                transform="rotate(90 14.6644 14.6642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="1.49642"
+                cy="14.6642"
+                r="1.49626"
+                transform="rotate(90 1.49642 14.6642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="40.9984"
+                cy="27.8302"
+                r="1.49626"
+                transform="rotate(90 40.9984 27.8302)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="27.8304"
+                cy="27.8302"
+                r="1.49626"
+                transform="rotate(90 27.8304 27.8302)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="14.6644"
+                cy="27.8302"
+                r="1.49626"
+                transform="rotate(90 14.6644 27.8302)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="1.49642"
+                cy="27.8302"
+                r="1.49626"
+                transform="rotate(90 1.49642 27.8302)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="40.9984"
+                cy="40.9982"
+                r="1.49626"
+                transform="rotate(90 40.9984 40.9982)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="27.8304"
+                cy="40.9963"
+                r="1.49626"
+                transform="rotate(90 27.8304 40.9963)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="14.6644"
+                cy="40.9982"
+                r="1.49626"
+                transform="rotate(90 14.6644 40.9982)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="1.49642"
+                cy="40.9963"
+                r="1.49626"
+                transform="rotate(90 1.49642 40.9963)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="40.9984"
+                cy="54.1642"
+                r="1.49626"
+                transform="rotate(90 40.9984 54.1642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="27.8304"
+                cy="54.1642"
+                r="1.49626"
+                transform="rotate(90 27.8304 54.1642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="14.6644"
+                cy="54.1642"
+                r="1.49626"
+                transform="rotate(90 14.6644 54.1642)"
+                fill="white"
+              ></circle>
+              <circle
+                cx="1.49642"
+                cy="54.1642"
+                r="1.49626"
+                transform="rotate(90 1.49642 54.1642)"
+                fill="white"
+              ></circle>
+            </g>
+          </svg>
+        </span>
+      </section>
     </div>
   );
 };

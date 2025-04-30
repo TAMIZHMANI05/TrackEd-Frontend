@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import projImg from "../../assets/images/Project-Org.svg"; 
 
 const ProjectManagement = () => {
   return (
@@ -26,7 +27,7 @@ const ProjectManagement = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="space-y-6">
+          <div className="space-y-6  order-1">
             <h1 className="text-4xl font-bold text-light-text-primary dark:text-dark-text-primary">
               Project Management
               <span className="block text-light-primary dark:text-dark-primary text-xl mt-2">
@@ -133,70 +134,7 @@ const ProjectManagement = () => {
 
           {/* Illustration */}
           <div className="relative">
-            <svg
-              className="w-full h-auto"
-              viewBox="0 0 400 300"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                className="text-light-primary dark:text-dark-primary"
-                fill="currentColor"
-                x="50"
-                y="50"
-                width="300"
-                height="200"
-                rx="10"
-              />
-              <rect
-                className="text-white dark:text-dark-card"
-                fill="currentColor"
-                x="70"
-                y="70"
-                width="80"
-                height="150"
-                rx="5"
-              />
-              <rect
-                className="text-white dark:text-dark-card"
-                fill="currentColor"
-                x="160"
-                y="70"
-                width="80"
-                height="150"
-                rx="5"
-              />
-              <rect
-                className="text-white dark:text-dark-card"
-                fill="currentColor"
-                x="250"
-                y="70"
-                width="80"
-                height="150"
-                rx="5"
-              />
-              <circle
-                className="text-light-accent dark:text-dark-accent"
-                fill="currentColor"
-                cx="110"
-                cy="100"
-                r="10"
-              />
-              <circle
-                className="text-light-secondary dark:text-dark-secondary"
-                fill="currentColor"
-                cx="200"
-                cy="100"
-                r="10"
-              />
-              <circle
-                className="text-light-accent dark:text-dark-accent"
-                fill="currentColor"
-                cx="290"
-                cy="100"
-                r="10"
-              />
-            </svg>
+            <img src={projImg} alt="" />
             <div className="absolute inset-0 bg-gradient-to-br from-light-primary/20 to-light-accent/20 dark:from-dark-primary/20 dark:to-dark-accent/20 rounded-lg filter blur-3xl opacity-50"></div>
           </div>
         </div>

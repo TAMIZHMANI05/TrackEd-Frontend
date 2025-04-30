@@ -7,7 +7,9 @@ const useInView = (options = {}) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
       },
       { threshold: 0.1, ...options }
     );

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import CgpaImage from "../../assets/images/CGPA-Tracking.svg";
 const CGPATracking = () => {
   return (
     <div className="min-h-screen pt-20 bg-light-bg dark:bg-dark-bg">
@@ -26,7 +26,7 @@ const CGPATracking = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="space-y-6">
+          <div className="space-y-6 order-1">
             <h1 className="text-4xl font-bold text-light-text-primary dark:text-dark-text-primary">
               CGPA Tracking
               <span className="block text-light-primary dark:text-dark-primary text-xl mt-2">
@@ -135,35 +135,7 @@ const CGPATracking = () => {
 
           {/* Illustration */}
           <div className="relative">
-            <svg
-              className="w-full h-auto"
-              viewBox="0 0 400 300"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                className="text-light-primary dark:text-dark-primary"
-                fill="currentColor"
-                d="M150 250h100v-40h-100v40zm0-60h100v-40h-100v40zm0-60h100v-40h-100v40zm-20 140h140a10 10 0 0 0 10-10V70a10 10 0 0 0-10-10H130a10 10 0 0 0-10 10v190a10 10 0 0 0 10 10z"
-              />
-              <path
-                className="text-light-accent dark:text-dark-accent"
-                fill="currentColor"
-                d="M310 220l-20-60-20 60h40zm-30-80l40 120h-80l40-120z"
-              />
-              <circle
-                className="text-light-secondary dark:text-dark-secondary"
-                fill="currentColor"
-                cx="200"
-                cy="150"
-                r="80"
-              />
-              <path
-                fill="currentColor"
-                className="text-white dark:text-dark-card"
-                d="M200 190v-80l60 40-60 40zm0-100a60 60 0 1 0 0 120 60 60 0 0 0 0-120z"
-              />
-            </svg>
+            <img src={CgpaImage} alt="" />
             <div className="absolute inset-0 bg-gradient-to-br from-light-primary/20 to-light-accent/20 dark:from-dark-primary/20 dark:to-dark-accent/20 rounded-lg filter blur-3xl opacity-50"></div>
           </div>
         </div>
