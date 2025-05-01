@@ -27,7 +27,7 @@ const Navbar = () => {
     { name: "CGPA Tracking", path: "/features/cgpa-tracking" },
     { name: "Project Management", path: "/features/project-management" },
     { name: "AI Insights", path: "/features/ai-insights" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact", path: "#footer" },
   ];
 
   return (
@@ -84,7 +84,28 @@ const Navbar = () => {
             {/* Navigation Items */}
             <div className="flex items-center space-x-8">
               {navigationItems.map((item) =>
-                item.isDropdown ? (
+                item.name === "Contact" ? (
+                  <a
+                    key={item.name}
+                    href="#footer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const footer = document.getElementById("footer");
+                      if (footer) {
+                        footer.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className={`nav-underline transition-colors px-2 py-1 rounded-md
+                      ${
+                        location.hash === "#footer"
+                          ? "text-light-primary dark:text-dark-primary font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
+                          : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10"
+                      }
+                    `}
+                  >
+                    {item.name}
+                  </a>
+                ) : item.isDropdown ? (
                   <div
                     key={item.name}
                     className="relative"
@@ -238,28 +259,40 @@ const Navbar = () => {
                     ))}
                   </div>
                 </div>
+              ) : item.name === "Contact" ? (
+                <a
+                  key={item.name}
+                  href="#footer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsMobileMenuOpen(false);
+                    setTimeout(() => {
+                      const footer = document.getElementById("footer");
+                      if (footer) {
+                        footer.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }, 200); // Wait for menu to close
+                  }}
+                  className="nav-underline block w-full text-left text-lg px-4 py-3 rounded-md transition-colors text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10"
+                >
+                  {item.name}
+                </a>
               ) : (
                 <Link
                   key={item.name}
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`nav-underline block text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary
-                    ${
-                      location.pathname === item.path
-                        ? "font-bold bg-light-primary/10 dark:bg-dark-primary/10 active"
-                        : ""
-                    }
-                  `}
+                  className="nav-underline block w-full text-left text-lg px-4 py-3 rounded-md transition-colors text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-primary/10 dark:hover:bg-dark-primary/10"
                 >
                   {item.name}
                 </Link>
               )
             )}
-            <div className="pt-4 flex flex-col space-y-4">
+            <div className="pt-4 flex flex-col space-y-4 border-t border-light-border dark:border-dark-border mt-4">
               <Link
                 to="/signin"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full text-center px-4 py-2 rounded-lg bg-light-primary dark:bg-dark-primary text-white hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors"
+                className="w-full text-center px-4 py-2 rounded-lg bg-light-primary dark:bg-dark-primary text-white hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors text-lg"
               >
                 Sign In
               </Link>

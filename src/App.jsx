@@ -4,6 +4,7 @@ import Landing from "./pages/Landing";
 import CGPATracking from "./pages/features/CGPATracking";
 import ProjectManagement from "./pages/features/ProjectManagement";
 import AIInsights from "./pages/features/AIInsights";
+import About from "./pages/About";
 import { ThemeProvider } from "./context/ThemeContext";
 import Footer from "./components/Footer";
 import ScrollToTopButton from "./components/ScrollToTopButton";
@@ -19,6 +20,7 @@ function App() {
           <ScrollToTopButton />
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
             <Route path="/features/cgpa-tracking" element={<CGPATracking />} />
             <Route
               path="/features/project-management"
