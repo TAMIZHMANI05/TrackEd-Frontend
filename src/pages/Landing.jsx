@@ -166,7 +166,7 @@ const Landing = () => {
               </p>
               <div className="flex items-center flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-x-6 pt-4">
                 <a
-                  href="/signin"
+                  href="/signup"
                   className="w-full sm:w-auto rounded-md bg-light-primary dark:bg-dark-primary px-6 sm:px-4 py-3 sm:py-2.5 text-base sm:text-sm font-semibold text-white shadow-sm hover:scale-105 hover:bg-light-secondary dark:hover:bg-dark-secondary transition-all duration-200"
                 >
                   Get Started
@@ -275,7 +275,7 @@ const Landing = () => {
                   } `}
                   ref={actionSectionRef}
                 >
-                  <h1 class="mt-0 mb-3 text-3xl font-bold leading-tight sm:text-4xl sm:leading-tight md:text-[40px] md:leading-tight text-white ">
+                  <h1 className="mt-0 mb-3 text-3xl font-bold leading-tight sm:text-4xl sm:leading-tight md:text-[40px] md:leading-tight text-white ">
                     Take the Leap Towards Excellence
                   </h1>
                   <p className="text-white mt-4 text-lg sm:text-xl">
@@ -287,15 +287,15 @@ const Landing = () => {
               </div>
             </div>
             <div
-              class={`w-full px-4 lg:w-1/2 reveal ${
+              className={`w-full px-4 lg:w-1/2 reveal ${
                 isActionInView ? "visible" : ""
               }`}
               ref={actionSectionRef}
             >
-              <div class="text-center lg:text-right">
+              <div className="text-center lg:text-right">
                 <a
-                  class="text-black font-semibold rounded-lg mx-auto inline-flex items-center justify-center bg-white py-4 px-9 hover:bg-opacity-90"
-                  href="/signin"
+                  className="text-black font-semibold rounded-lg mx-auto inline-flex items-center justify-center bg-white py-4 px-9 hover:bg-opacity-90"
+                  href="/signup"
                 >
                   Get Started Now!
                 </a>

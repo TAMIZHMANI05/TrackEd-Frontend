@@ -196,7 +196,7 @@ const Navbar = () => {
               )}
             </div>
             <Link
-              to="/signin"
+              to="/signup"
               className="transition-all duration-300 px-4 py-2 text-base rounded-lg bg-light-primary dark:bg-dark-primary text-white hover:bg-light-secondary dark:hover:bg-dark-secondary"
             >
               Sign In
@@ -290,7 +290,7 @@ const Navbar = () => {
             )}
             <div className="pt-4 flex flex-col space-y-4 border-t border-light-border dark:border-dark-border mt-4">
               <Link
-                to="/signin"
+                to="/signup"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full text-center px-4 py-2 rounded-lg bg-light-primary dark:bg-dark-primary text-white hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors text-lg"
               >
