@@ -13,6 +13,11 @@ import AIInsights from "./pages/features/AIInsights";
 import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
+import CGPATracker from "./pages/functional/CGPATracker";
+import ProjectManager from "./pages/functional/ProjectManager";
+import AIInsightsTool from "./pages/functional/AIInsightsTool";
+import Profile from "./pages/Profile";
+import DashboardLayout from "./pages/DashboardLayout";
 
 function AppRoutes() {
   const { user } = useAuth();
@@ -22,13 +27,18 @@ function AppRoutes() {
   return (
     <Routes>
       <Route
-        path="/dashboard"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/cgpa-tracker" element={<CGPATracker />} />
+        <Route path="/project-manager" element={<ProjectManager />} />
+        <Route path="/ai-insights-tool" element={<AIInsightsTool />} />
+      </Route>
       <Route path="/" element={publicOnly(<Landing />)} />
       <Route path="/about" element={publicOnly(<About />)} />
       <Route path="/signup" element={publicOnly(<Signup />)} />

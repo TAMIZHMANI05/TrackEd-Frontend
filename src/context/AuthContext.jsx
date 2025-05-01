@@ -13,7 +13,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem("token"));
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(() => !!localStorage.getItem("token"));
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
 
@@ -68,7 +68,11 @@ export function AuthProvider({ children }) {
   };
 
   const fetchMe = async () => {
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     setAuthToken(token);
     try {
       const me = await getMe();
@@ -78,11 +82,14 @@ export function AuthProvider({ children }) {
       clearAuthToken();
       setToken(null);
       localStorage.removeItem("token");
+    } finally {
+      setLoading(false);
     }
   };
 
   React.useEffect(() => {
     if (token) fetchMe();
+    else setLoading(false);
     // eslint-disable-next-line
   }, [token]);
 
@@ -97,6 +104,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         loading,
         error,
         message,

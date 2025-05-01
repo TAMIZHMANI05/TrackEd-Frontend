@@ -27,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-light-bg dark:bg-dark-bg px-2">
+    <div className="min-h-screen flex items-center justify-center bg-light-bg dark:bg-dark-bg px-2 -mt-20 md:mt-0">
       <form
         onSubmit={handleSubmit}
         className="bg-light-bg dark:bg-dark-bg shadow-lg rounded-lg p-4 sm:p-8 w-full max-w-md border border-gray-500"
@@ -55,19 +55,19 @@ const Login = () => {
           <div></div>
           <a
             href="/forgot-password"
-            className="text-xs sm:text-sm text-light-primary dark:text-dark-primary underline"
+            className="text-md sm:text-md text-light-primary dark:text-dark-primary underline"
           >
             Forgot Password?
           </a>
         </div>
         <button
           type="submit"
-          className="w-full bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors font-semibold text-base sm:text-lg"
+          className="w-full bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors font-semibold text-base sm:text-lg cursor-pointer"
           disabled={loading}
         >
           {loading ? "Logging In..." : "Log In"}
         </button>
-        <div className="mt-3 sm:mt-4 text-center text-xs sm:text-sm">
+        <div className="mt-3 sm:mt-4 text-center text-md sm:text-md">
           Don&apos;t have an account?{" "}
           <a
             href="/signup"

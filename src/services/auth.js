@@ -1,6 +1,6 @@
 // Auth API service for signup, login, and email verification
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/auth";
+  import.meta.env.VITE_API_URL;
 
 let authToken = null;
 
@@ -18,11 +18,25 @@ function getHeaders() {
   return headers;
 }
 
-export async function signup(email, password) {
+export async function signup({
+  email,
+  password,
+  username,
+  fullName,
+  studentId,
+  course,
+}) {
   const res = await fetch(`${API_URL}/signup`, {
     method: "POST",
     headers: getHeaders(),
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({
+      email,
+      password,
+      username,
+      fullName,
+      studentId,
+      course,
+    }),
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Signup failed");
@@ -81,5 +95,27 @@ export async function resetPassword(token, password) {
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Failed to reset password");
+  return data;
+}
+
+export async function updateProfile(profile) {
+  const res = await fetch(`${API_URL}/profile`, {
+    method: "PATCH",
+    headers: getHeaders(),
+    body: JSON.stringify(profile),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Profile update failed");
+  return data;
+}
+
+export async function changePassword(currentPassword, newPassword) {
+  const res = await fetch(`${API_URL}/change-password`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Password change failed");
   return data;
 }

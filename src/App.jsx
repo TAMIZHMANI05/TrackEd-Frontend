@@ -1,9 +1,5 @@
 import {
   BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Landing from "./pages/Landing";
@@ -20,24 +16,19 @@ import Footer from "./components/Footer";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import ScrollToTopOnNavigate from "./components/ScrollToTopOnNavigate";
 import { Toaster } from "react-hot-toast";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppRoutes from "./AppRoutes";
+import Sidebar from "./components/Sidebar";
+import LayoutWrapper from "./LayoutWrapper";
 
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
-            <Toaster position="top-right" />
-            <Navbar />
-            <ScrollToTopOnNavigate />
-            <ScrollToTopButton />
-            <AppRoutes />
-            <Footer />
-          </div>
+          <LayoutWrapper />
         </Router>
       </AuthProvider>
     </ThemeProvider>
