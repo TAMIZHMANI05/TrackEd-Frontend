@@ -49,25 +49,19 @@ function AppRoutes() {
       <Route
         path="/features/cgpa-tracking"
         element={
-          <ProtectedRoute>
             <CGPATracking />
-          </ProtectedRoute>
         }
       />
       <Route
         path="/features/project-management"
         element={
-          <ProtectedRoute>
             <ProjectManagement />
-          </ProtectedRoute>
         }
       />
       <Route
         path="/features/ai-insights"
         element={
-          <ProtectedRoute>
             <AIInsights />
-          </ProtectedRoute>
         }
       />
     </Routes>

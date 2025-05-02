@@ -15,7 +15,7 @@ const LayoutWrapper = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const showSidebar =
     location.pathname.startsWith("/dashboard") ||
-    location.pathname.startsWith("/features") ||
+    // location.pathname.startsWith("/features") ||
     location.pathname.startsWith("/cgpa-tracker") ||
     location.pathname.startsWith("/project-manager") ||
     location.pathname.startsWith("/ai-insights-tool") ||
