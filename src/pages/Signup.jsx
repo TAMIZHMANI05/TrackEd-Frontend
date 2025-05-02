@@ -127,7 +127,7 @@ const Signup = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors font-semibold text-base sm:text-lg"
+          className="w-full bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors font-semibold text-base sm:text-lg cursor-pointer"
           disabled={loading}
         >
           {loading ? "Signing Up..." : "Sign Up"}
