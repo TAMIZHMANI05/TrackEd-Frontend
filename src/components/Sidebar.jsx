@@ -102,7 +102,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
       {/* Overlay for mobile */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black bg-opacity-30 md:hidden"
+          className="fixed inset-0 z-20 bg-black opacity-20 md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}

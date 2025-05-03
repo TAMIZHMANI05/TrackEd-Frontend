@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile, changePassword } from "../services/auth";
 import toast from "react-hot-toast";
+import {
+  FaUser,
+  FaIdBadge,
+  FaIdCard,
+  FaGraduationCap,
+  FaLock,
+} from "react-icons/fa";
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -83,51 +90,63 @@ const Profile = () => {
           <form onSubmit={handleProfileSave} className="space-y-4 mb-8">
             <div>
               <label className="font-semibold block mb-1">Username</label>
-              <input
-                type="text"
-                name="username"
-                value={form.username}
-                onChange={handleProfileChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-                disabled={!edit}
-                autoComplete="off"
-              />
+              <div className="relative">
+                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="text"
+                  name="username"
+                  value={form.username}
+                  onChange={handleProfileChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                  disabled={!edit}
+                  autoComplete="off"
+                />
+              </div>
             </div>
             <div>
               <label className="font-semibold block mb-1">Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                value={form.fullName}
-                onChange={handleProfileChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-                disabled={!edit}
-                autoComplete="off"
-              />
+              <div className="relative">
+                <FaIdBadge className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="text"
+                  name="fullName"
+                  value={form.fullName}
+                  onChange={handleProfileChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                  disabled={!edit}
+                  autoComplete="off"
+                />
+              </div>
             </div>
             <div>
               <label className="font-semibold block mb-1">Student ID</label>
-              <input
-                type="text"
-                name="studentId"
-                value={form.studentId}
-                onChange={handleProfileChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-                disabled={!edit}
-                autoComplete="off"
-              />
+              <div className="relative">
+                <FaIdCard className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="text"
+                  name="studentId"
+                  value={form.studentId}
+                  onChange={handleProfileChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                  disabled={!edit}
+                  autoComplete="off"
+                />
+              </div>
             </div>
             <div>
               <label className="font-semibold block mb-1">Course</label>
-              <input
-                type="text"
-                name="course"
-                value={form.course}
-                onChange={handleProfileChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-                disabled={!edit}
-                autoComplete="off"
-              />
+              <div className="relative">
+                <FaGraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="text"
+                  name="course"
+                  value={form.course}
+                  onChange={handleProfileChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                  disabled={!edit}
+                  autoComplete="off"
+                />
+              </div>
             </div>
             <div className="flex gap-2 mt-4">
               {edit ? (
@@ -180,35 +199,44 @@ const Profile = () => {
               <label className="font-semibold block mb-1">
                 Current Password
               </label>
-              <input
-                type="password"
-                name="currentPassword"
-                value={pwForm.currentPassword}
-                onChange={handlePwChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-              />
+              <div className="relative">
+                <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="password"
+                  name="currentPassword"
+                  value={pwForm.currentPassword}
+                  onChange={handlePwChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                />
+              </div>
             </div>
             <div>
               <label className="font-semibold block mb-1">New Password</label>
-              <input
-                type="password"
-                name="newPassword"
-                value={pwForm.newPassword}
-                onChange={handlePwChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-              />
+              <div className="relative">
+                <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="password"
+                  name="newPassword"
+                  value={pwForm.newPassword}
+                  onChange={handlePwChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                />
+              </div>
             </div>
             <div>
               <label className="font-semibold block mb-1">
                 Confirm New Password
               </label>
-              <input
-                type="password"
-                name="confirmNewPassword"
-                value={pwForm.confirmNewPassword}
-                onChange={handlePwChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
-              />
+              <div className="relative">
+                <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-light-primary dark:text-dark-primary" />
+                <input
+                  type="password"
+                  name="confirmNewPassword"
+                  value={pwForm.confirmNewPassword}
+                  onChange={handlePwChange}
+                  className="w-full pl-10 pr-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary bg-light-bg dark:bg-dark-bg"
+                />
+              </div>
             </div>
             <button
               type="submit"
