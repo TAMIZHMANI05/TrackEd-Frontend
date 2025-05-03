@@ -114,6 +114,7 @@ export function AuthProvider({ children }) {
         logout,
         setError,
         setMessage,
+        token
       }}
     >
       {children}

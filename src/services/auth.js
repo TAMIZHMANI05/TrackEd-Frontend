@@ -26,7 +26,7 @@ export async function signup({
   studentId,
   course,
 }) {
-  const res = await fetch(`${API_URL}/signup`, {
+  const res = await fetch(`${API_URL}/auth/signup`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({
@@ -44,7 +44,7 @@ export async function signup({
 }
 
 export async function login(email, password) {
-  const res = await fetch(`${API_URL}/login`, {
+  const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({ email, password }),
@@ -56,7 +56,7 @@ export async function login(email, password) {
 
 export async function verifyEmail(token) {
   console.log("auth.js: Calling backend /verify-email with token:", token);
-  const res = await fetch(`${API_URL}/verify-email`, {
+  const res = await fetch(`${API_URL}/auth/verify-email`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({ token }),
@@ -67,7 +67,7 @@ export async function verifyEmail(token) {
 }
 
 export async function getMe() {
-  const res = await fetch(`${API_URL}/me`, {
+  const res = await fetch(`${API_URL}/auth/me`, {
     method: "GET",
     headers: getHeaders(),
   });
@@ -77,7 +77,7 @@ export async function getMe() {
 }
 
 export async function forgotPassword(email) {
-  const res = await fetch(`${API_URL}/forgot-password`, {
+  const res = await fetch(`${API_URL}/auth/forgot-password`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({ email }),
@@ -88,7 +88,7 @@ export async function forgotPassword(email) {
 }
 
 export async function resetPassword(token, password) {
-  const res = await fetch(`${API_URL}/reset-password`, {
+  const res = await fetch(`${API_URL}/auth/reset-password`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({ token, password }),
@@ -99,7 +99,7 @@ export async function resetPassword(token, password) {
 }
 
 export async function updateProfile(profile) {
-  const res = await fetch(`${API_URL}/profile`, {
+  const res = await fetch(`${API_URL}/auth/profile`, {
     method: "PATCH",
     headers: getHeaders(),
     body: JSON.stringify(profile),
@@ -110,7 +110,7 @@ export async function updateProfile(profile) {
 }
 
 export async function changePassword(currentPassword, newPassword) {
-  const res = await fetch(`${API_URL}/change-password`, {
+  const res = await fetch(`${API_URL}/auth/change-password`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({ currentPassword, newPassword }),

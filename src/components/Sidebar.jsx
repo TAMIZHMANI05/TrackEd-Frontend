@@ -38,7 +38,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
       </button>
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full z-30 bg-light-bg dark:bg-dark-bg border-r border-gray-200 dark:border-gray-700 transition-all duration-200
+        className={`fixed top-0 left-0 h-full z-30 bg-light-bg dark:bg-dark-bg border-r border-gray-200 dark:border-gray-700 transition-all duration-400
           ${expanded ? "w-56" : "w-16"}
           ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
           rounded-r-2xl md:rounded-r-2xl shadow-lg md:shadow-xl
