@@ -58,36 +58,36 @@ const WelcomeBar = () => {
   );
 
   return (
-    <div className="rounded-2xl bg-gradient-to-r from-blue-700 to-blue-400 p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg">
+    <div className="rounded-2xl bg-gradient-to-r bg-light-bg dark:bg-dark-bg p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg border">
       <div className="flex-1 min-w-0">
-        <div className="text-white text-sm mb-1">{date}</div>
-        <div className="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-2">
+        <div className="text-sm mb-1">{date}</div>
+        <div className="text-2xl md:text-3xl font-bold mb-1 flex items-center gap-2">
           Welcome Back, {user.fullName} <span className="text-2xl">👋</span>
         </div>
-        <div className="text-blue-100 mb-4 text-base">
+        <div className="mb-4 text-base">
           <span className="text-2xl align-top mr-1">“</span>
           {quote}
           <span className="text-2xl align-bottom ml-1">”</span>
         </div>
         <div className="flex gap-3 flex-wrap">
-          <div className="flex-1 min-w-[110px] max-w-xs bg-white rounded-lg px-5 py-3 flex flex-col items-center">
-            <span className="text-black text-sm font-medium mb-1">
+          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border">
+            <span className="text-sm font-medium mb-1">
               Current CGPA
             </span>
             <span className="text-blue-700 text-xl font-bold">
               {user.currentCgpa}
             </span>
           </div>
-          <div className="flex-1 min-w-[110px] max-w-xs bg-white rounded-lg px-5 py-3 flex flex-col items-center">
-            <span className="text-black text-sm font-medium mb-1">
+          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border">
+            <span className="text-sm font-medium mb-1">
               Completed Semesters
             </span>
             <span className="text-green-600 text-xl font-bold">
               {semestersCompleted}
             </span>
           </div>
-          <div className="flex-1 min-w-[110px] max-w-xs bg-white rounded-lg px-5 py-3 flex flex-col items-center">
-            <span className="text-black text-sm font-medium mb-1">
+          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border">
+            <span className="text-sm font-medium mb-1">
               Completed Subjects
             </span>
             <span className="text-yellow-500 text-xl font-bold flex items-center gap-1">
