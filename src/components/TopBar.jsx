@@ -21,7 +21,7 @@ const TopBar = ({ sidebarExpanded }) => {
   return (
     <div
       className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center justify-between bg-light-bg dark:bg-dark-bg border-b border-gray-200 dark:border-gray-700 px-4 transition-all rounded-b-2xl shadow-md duration-400
-        ${sidebarExpanded ? "md:ml-58" : "md:ml-16"} ml-0
+        ${sidebarExpanded ? "md:ml-58" : "md:ml-18"} ml-0
         ${!sidebarExpanded ? "sm:ml-0" : ""}
       `}
     >

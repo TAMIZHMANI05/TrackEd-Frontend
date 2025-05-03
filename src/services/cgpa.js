@@ -9,6 +9,7 @@ export async function getCgpaData(token) {
     headers: { Authorization: `Bearer ${token}` },
     withCredentials: true,
   });
+  
   return res.data; // { cgpaData, cgpa, sgpa }
 }
 

@@ -18,9 +18,10 @@ const SEMESTERS = Array.from({ length: 8 }, (_, i) => `Semester ${i + 1}`);
 const gradeOptions = Object.keys(GRADE_POINTS);
 
 const CGPATracker = () => {
-  const { token } = useAuth();
+  const {token } = useAuth();
   const [cgpaData, setCgpaData] = useState([]);
   const [expanded, setExpanded] = useState(null);
+  const [currentCgpa, setCurrentCgpa] = useState(0);
   const [forms, setForms] = useState(
     SEMESTERS.map(() => ({ subject: "", credits: "", grade: "A+" }))
   );
@@ -31,10 +32,12 @@ const CGPATracker = () => {
     if (!token) return;
     try {
       const data = await getCgpaData(token);
+      
       // Handle both array and object with cgpaData property
       if (Array.isArray(data)) {
         setCgpaData(data);
       } else if (data && Array.isArray(data.cgpaData)) {
+        setCurrentCgpa(data.currentCgpa);
         setCgpaData(data.cgpaData);
       } else {
         setCgpaData([]);
@@ -50,7 +53,6 @@ const CGPATracker = () => {
     // eslint-disable-next-line
   }, [token]);
 
-  console.log("cgpaData", cgpaData);
 
   const semesters = Array(8)
     .fill(null)
@@ -59,9 +61,6 @@ const CGPATracker = () => {
       return found ? found.subjects : [];
     });
 
-  const currentCgpa = cgpaData.length
-    ? cgpaData[cgpaData.length - 1].cgpa
-    : "-";
 
   const handleExpand = (idx) => {
     setExpanded(expanded === idx ? null : idx);
@@ -158,13 +157,21 @@ const CGPATracker = () => {
                         <span className="text-base font-normal text-gray-500 dark:text-gray-400">
                           SGPA:{" "}
                           <span className="font-bold text-light-primary dark:text-dark-primary">
-                            {semesterData ? semesterData.sgpa : "-"}
+                            {semesterData
+                              ? semesterData.sgpa != 0
+                                ? semesterData.sgpa
+                                : "-"
+                              : "-"}
                           </span>
                         </span>
                         <span className="text-base font-normal text-gray-500 dark:text-gray-400">
                           CGPA:{" "}
                           <span className="font-bold text-light-primary dark:text-dark-primary">
-                            {semesterData ? semesterData.cgpa : "-"}
+                            {semesterData
+                              ? semesterData.cgpa != 0
+                                ? semesterData.cgpa
+                                : "-"
+                              : "-"}
                           </span>
                         </span>
                         <span className="text-2xl">

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { getCgpaData } from "../services/cgpa";
 import { useAuth } from "../context/AuthContext";
+import { quotes as MOTIVATIONAL_QUOTES } from "../utils/quotes";
 import {
   Chart as ChartJS,
   LineElement,
@@ -26,11 +27,13 @@ ChartJS.register(
 );
 
 const SEMS = Array.from({ length: 8 }, (_, i) => `Sem ${i + 1}`);
-const GRADE_POINTS = { O: 10, "A+": 9, A: 8, "B+": 7, B: 6, C: 5 };
 
 const WelcomeBar = () => {
   const [date, setDate] = useState("");
   const { user } = useAuth();
+  console.log(user);
+
+  const [quote, setQuote] = useState("");
 
   useEffect(() => {
     const today = new Date();
@@ -41,52 +44,63 @@ const WelcomeBar = () => {
         day: "numeric",
       })
     );
+    // Pick a random motivational quote
+    const randomIdx = Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length);
+    setQuote(MOTIVATIONAL_QUOTES[randomIdx]);
   }, []);
+  const semestersCompleted = user.cgpaData.filter(
+    (s) => typeof s.sgpa === "number" && s.sgpa !== null
+  ).length;
+
+  const totalSubjects = user.cgpaData.reduce(
+    (sum, s) => sum + (s.subjects ? s.subjects.length : 0),
+    0
+  );
 
   return (
-    <div className="rounded-2xl bg-gradient-to-r from-blue-700 to-blue-400 p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg">
+    <div className="rounded-2xl bg-gradient-to-r from-blue-700 to-blue-400 p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg sm:w-250">
       <div className="flex-1 min-w-0">
         <div className="text-white text-sm mb-1">{date}</div>
         <div className="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-2">
           Welcome Back, {user.fullName} <span className="text-2xl">👋</span>
         </div>
         <div className="text-blue-100 mb-4 text-base">
-          Check out the latest updates on your courses..
+          <span className="text-2xl align-top mr-1">“</span>
+          {quote}
+          <span className="text-2xl align-bottom ml-1">”</span>
         </div>
         <div className="flex gap-3 flex-wrap">
-          <div className="bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center min-w-[110px]">
+          <div className="flex-1 min-w-[110px] max-w-xs bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center">
             <span className="text-gray-500 text-sm font-medium mb-1">
-              Courses
+              Current CGPA
             </span>
-            <span className="text-blue-700 text-xl font-bold"></span>
+            <span className="text-blue-700 text-xl font-bold">
+              {user.currentCgpa}
+            </span>
           </div>
-          <div className="bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center min-w-[110px]">
+          <div className="flex-1 min-w-[110px] max-w-xs bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center">
             <span className="text-gray-500 text-sm font-medium mb-1">
-              Attendance
+              Completed Semesters
             </span>
-            <span className="text-green-600 text-xl font-bold">%</span>
+            <span className="text-green-600 text-xl font-bold">
+              {semestersCompleted}
+            </span>
           </div>
-          <div className="bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center min-w-[110px]">
-            <span className="text-gray-500 text-sm font-medium mb-1">Rank</span>
+          <div className="flex-1 min-w-[110px] max-w-xs bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center">
+            <span className="text-gray-500 text-sm font-medium mb-1">
+              Completed Subjects
+            </span>
             <span className="text-yellow-500 text-xl font-bold flex items-center gap-1">
-              <span>🏆</span>
-            </span>
-          </div>
-          <div className="bg-light-bg dark:bg-dark-bg rounded-lg px-5 py-3 flex flex-col items-center min-w-[110px]">
-            <span className="text-gray-500 text-sm font-medium mb-1">
-              Points Earned
-            </span>
-            <span className="text-orange-500 text-xl font-bold flex items-center gap-1">
-              <span>🔥</span>
+              <span>{totalSubjects}</span>
             </span>
           </div>
         </div>
       </div>
-      <div className="hidden md:block ml-8">
+      <div className="hidden md:block">
         <img
           src={DashboardImage}
           alt="Dashboard Illustration"
-          className="w-60 h-60 object-contain"
+          className="object-contain  w-80"
         />
       </div>
     </div>
@@ -126,7 +140,7 @@ const Dashboard = () => {
     labels: SEMS,
     datasets: [
       {
-        label: "GPA",
+        label: "SGPA",
         data: gpaData.gpas || [],
         fill: true,
         borderColor: "#6366f1",
@@ -149,15 +163,15 @@ const Dashboard = () => {
   const chartOptions = {
     responsive: true,
     plugins: {
-      legend: { display: true, position: "top" }, // Show legend at the top
+      legend: { display: true, position: "bottom" }, // Show legend at the top
       tooltip: { enabled: true },
     },
     scales: {
       y: {
         min: 0,
-        max: 10,
+        max: 11,
         ticks: { stepSize: 1 },
-        title: { display: true, text: "GPA" },
+        title: { display: true, text: "SGPA" },
       },
       x: {
         title: { display: true, text: "Sem" },
