@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaPlus, FaEdit, FaTrash, FaTasks, FaMagic } from "react-icons/fa";
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaTasks,
+  FaMagic,
+  FaInfoCircle,
+} from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 
 const API_URL = `${import.meta.env.VITE_API_URL}`;
@@ -19,7 +26,6 @@ const initialTask = {
   description: "",
   dueDate: "",
   status: "To Do",
-  priority: "Medium",
   notes: [],
 };
 
@@ -35,6 +41,7 @@ const ProjectManager = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
   const [loadingRec, setLoadingRec] = useState(false);
+  const [descModal, setDescModal] = useState({ open: false, desc: "" });
   const user = useAuth();
   const token = user.token;
 
@@ -325,16 +332,23 @@ const ProjectManager = () => {
                     <FaPlus /> Add Task
                   </button>
                 </div>
-                {/* Task List */}
-                <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {(project.tasks || []).map((task, idx) => (
-                    <div
-                      key={idx}
-                      className="py-2 flex items-center justify-between"
-                    >
-                      <div>
+                {/* Task List with info button for description */}
+                {(project.tasks || []).map((task, idx) => (
+                  <div key={idx} className="py-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setDescModal({ open: true, desc: task.description })
+                          }
+                          className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                          title="View Description"
+                        >
+                          <FaInfoCircle />
+                        </button>
                         <span
-                          className={`font-semibold mr-2 ${
+                          className={`font-semibold text-xs ${
                             task.status === "Done"
                               ? "text-green-600"
                               : task.status === "In Progress"
@@ -344,45 +358,45 @@ const ProjectManager = () => {
                         >
                           {task.title}
                         </span>
-                        <span className="text-xs text-gray-400 ml-2">
+                        <span className="text-xs text-gray-400">
                           {task.status}
                         </span>
-                        <span className="text-xs text-gray-400 ml-2">
+                        <span className="text-xs text-gray-400">
                           {task.dueDate
                             ? new Date(task.dueDate).toLocaleDateString()
                             : "-"}
                         </span>
-                        <span className="text-xs text-gray-400 ml-2">
-                          {task.priority}
-                        </span>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 items-center justify-end">
                         <button
-                          onClick={() => openEditTask(project, task, idx)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openEditTask(project, task, idx);
+                          }}
                           className="text-blue-500 hover:text-blue-700"
                           title="Edit Task"
                         >
                           <FaEdit />
                         </button>
                         <button
-                          onClick={() => handleDeleteTask(project, idx)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteTask(project, idx);
+                          }}
                           className="text-red-500 hover:text-red-700"
                           title="Delete Task"
                         >
                           <FaTrash />
                         </button>
-                        {/* Status toggle */}
                         {task.status !== "Done" && (
                           <button
-                            onClick={async () => {
+                            onClick={async (e) => {
+                              e.stopPropagation();
                               const updatedTasks = [...project.tasks];
                               updatedTasks[idx] = { ...task, status: "Done" };
                               await axios.put(
                                 `${API_URL}/project/${project._id}`,
-                                {
-                                  ...project,
-                                  tasks: updatedTasks,
-                                },
+                                { ...project, tasks: updatedTasks },
                                 {
                                   headers: { Authorization: `Bearer ${token}` },
                                 }
@@ -397,11 +411,31 @@ const ProjectManager = () => {
                         )}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Description Modal */}
+      {descModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow-lg p-6 w-full max-w-md relative animate-fade-in-up border border-light-border dark:border-dark-border">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl cursor-pointer"
+              onClick={() => setDescModal({ open: false, desc: "" })}
+            >
+              ×
+            </button>
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+              <FaInfoCircle className="text-blue-500" /> Task Description
+            </h2>
+            <div className="whitespace-pre-line">
+              {descModal.desc}
+            </div>
+          </div>
         </div>
       )}
 
@@ -560,22 +594,6 @@ const ProjectManager = () => {
                     <option value="To Do">To Do</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Done">Done</option>
-                  </select>
-                </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium mb-1">
-                    Priority
-                  </label>
-                  <select
-                    name="priority"
-                    value={taskForm.priority}
-                    onChange={handleTaskFormChange}
-                    className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded focus:outline-none focus:ring-2 focus:ring-green-400 bg-light-bg dark:bg-dark-bg"
-                    required
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
                   </select>
                 </div>
               </div>
