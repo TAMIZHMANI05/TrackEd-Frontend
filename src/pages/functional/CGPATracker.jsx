@@ -114,8 +114,8 @@ const CGPATracker = () => {
   };
 
   return (
-    <div className="w-full min-h-screen py-8 px-2 bg-light-bg dark:bg-dark-bg">
-      <div className="max-w-3xl mx-auto">
+    <div className="w-full max-w-5xl bg-light-bg dark:bg-dark-card rounded-lg shadow p-8 mx-auto my-8 flex-1 flex-row md:flex-row gap-8 border border-light-border dark:border-dark-border">
+      <div className="max-w-3xl mx-auto ">
         <h1 className="text-4xl font-bold mb-2 text-light-primary dark:text-dark-primary text-center">
           CGPA Tracker
         </h1>

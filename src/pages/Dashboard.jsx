@@ -31,7 +31,6 @@ const SEMS = Array.from({ length: 8 }, (_, i) => `Sem ${i + 1}`);
 const WelcomeBar = () => {
   const [date, setDate] = useState("");
   const { user } = useAuth();
-  console.log(user);
 
   const [quote, setQuote] = useState("");
 
