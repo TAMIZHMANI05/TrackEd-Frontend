@@ -23,6 +23,14 @@
   background: var(--color-bg);
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    /* display: none; */
+    /* -webkit-appearance: none; */
+    pointer-events: auto;
+    color: transparent;
+    opacity: 0;
+}
+
 /* Firefox */
 * {
   scrollbar-width: thin;

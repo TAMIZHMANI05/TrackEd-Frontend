@@ -7,6 +7,7 @@ import {
   FaTasks,
   FaMagic,
   FaInfoCircle,
+  FaSearch,
 } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 
@@ -42,8 +43,10 @@ const ProjectManager = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loadingRec, setLoadingRec] = useState(false);
   const [descModal, setDescModal] = useState({ open: false, desc: "" });
-  const user = useAuth();
-  const token = user.token;
+  const [keywordDialog, setKeywordDialog] = useState(false);
+  const [projectKeywords, setProjectKeywords] = useState("");
+  const {user,token} = useAuth();
+  
 
   // Fetch projects from backend
   useEffect(() => {
@@ -63,12 +66,17 @@ const ProjectManager = () => {
     setLoading(false);
   };
 
-  const fetchRecommendations = async () => {
+  const fetchRecommendations = async (keywords = "") => {
     setLoadingRec(true);
     try {
+      const context = keywords
+        ? `${user.course} student. Keywords: ${keywords}`
+        : `${user.course} student`;
+        console.log(context);
+        
       const res = await axios.post(
         `${API_URL}/gemini/recommend-projects`,
-        { context: "IT student, semester 4" }, // You can make this dynamic
+        { context },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRecommendations(res.data.projects);
@@ -195,14 +203,21 @@ const ProjectManager = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      fetchProjects();
+      // Update projects state locally instead of refetching all projects
+      setProjects((prev) =>
+        prev.map((p) =>
+          p._id === project._id ? { ...p, tasks: updatedTasks } : p
+        )
+      );
     } catch {}
   };
 
   return (
     <div className="w-full max-w-5xl bg-light-bg dark:bg-dark-card rounded-lg shadow p-8 mx-auto my-8 flex-1 flex-row md:flex-row gap-8 border border-light-border dark:border-dark-border">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Project Manager</h1>
+        <h1 className="text-3xl font-bold text-light-primary">
+          Project Manager
+        </h1>
         <button
           onClick={openAddProject}
           className="flex items-center gap-2 bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition text-white text-sm sm:text-base"
@@ -212,8 +227,8 @@ const ProjectManager = () => {
       </div>
       <div className="flex items-center gap-4 mb-6">
         <button
-          onClick={fetchRecommendations}
-          className="flex items-center gap-2 bg-purple-600  px-4 py-2 rounded hover:bg-purple-700 transition text-white text-sm sm:text-base"
+          onClick={() => setKeywordDialog(true)}
+          className="flex items-center gap-2 bg-purple-600 px-4 py-2 rounded hover:bg-purple-700 transition text-white text-sm sm:text-base"
         >
           <FaMagic /> Recommend Projects
         </button>
@@ -221,6 +236,53 @@ const ProjectManager = () => {
           <span className="text-gray-500">Loading recommendations...</span>
         )}
       </div>
+      {keywordDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow-lg p-6 w-full max-w-md relative animate-fade-in-up border border-light-border dark:border-dark-border">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl cursor-pointer"
+              onClick={() => setKeywordDialog(false)}
+            >
+              ×
+            </button>
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+              <FaSearch className="text-purple-500" /> Project Keywords
+              (optional)
+            </h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setKeywordDialog(false);
+                fetchRecommendations(projectKeywords);
+              }}
+              className="space-y-4"
+            >
+              <input
+                type="text"
+                value={projectKeywords}
+                onChange={(e) => setProjectKeywords(e.target.value)}
+                className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded focus:outline-none focus:ring-2 focus:ring-purple-400 bg-light-bg dark:bg-dark-bg"
+                placeholder="e.g. IoT, AI, web app, automation"
+              />
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                  onClick={() => setKeywordDialog(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded bg-purple-600 hover:bg-purple-700 font-semibold text-white"
+                >
+                  Get Recommendations
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {recommendations.length > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-2">Recommended Projects</h2>
@@ -394,14 +456,25 @@ const ProjectManager = () => {
                               e.stopPropagation();
                               const updatedTasks = [...project.tasks];
                               updatedTasks[idx] = { ...task, status: "Done" };
-                              await axios.put(
-                                `${API_URL}/project/${project._id}`,
-                                { ...project, tasks: updatedTasks },
-                                {
-                                  headers: { Authorization: `Bearer ${token}` },
-                                }
-                              );
-                              fetchProjects();
+                              try {
+                                await axios.put(
+                                  `${API_URL}/project/${project._id}`,
+                                  { ...project, tasks: updatedTasks },
+                                  {
+                                    headers: {
+                                      Authorization: `Bearer ${token}`,
+                                    },
+                                  }
+                                );
+                                // Update projects state locally instead of refetching all projects
+                                setProjects((prev) =>
+                                  prev.map((p) =>
+                                    p._id === project._id
+                                      ? { ...p, tasks: updatedTasks }
+                                      : p
+                                  )
+                                );
+                              } catch {}
                             }}
                             className="text-green-600 hover:text-green-800"
                             title="Mark as Done"
@@ -432,9 +505,7 @@ const ProjectManager = () => {
             <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
               <FaInfoCircle className="text-blue-500" /> Task Description
             </h2>
-            <div className="whitespace-pre-line">
-              {descModal.desc}
-            </div>
+            <div className="whitespace-pre-line">{descModal.desc}</div>
           </div>
         </div>
       )}
@@ -444,7 +515,7 @@ const ProjectManager = () => {
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30">
           <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow-lg p-6 w-full max-w-md relative animate-fade-in-up border border-light-border dark:border-dark-border">
             <button
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-4xl cursor-pointer"
               onClick={() => setShowProjectModal(false)}
             >
               ×
@@ -482,14 +553,32 @@ const ProjectManager = () => {
                   <label className="block text-sm font-medium mb-1">
                     Due Date
                   </label>
-                  <input
-                    type="date"
-                    name="dueDate"
-                    value={projectForm.dueDate}
-                    onChange={handleProjectFormChange}
-                    className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-light-bg dark:bg-dark-bg"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type="date"
+                      name="dueDate"
+                      value={projectForm.dueDate}
+                      onChange={handleProjectFormChange}
+                      className="w-full px-3 py-2 pr-10 border border-light-border dark:border-dark-border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-light-bg dark:bg-dark-bg"
+                      required
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-light-text dark:text-dark-text"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
                 <div className="flex-1">
                   <label className="block text-sm font-medium mb-1">
@@ -571,14 +660,32 @@ const ProjectManager = () => {
                   <label className="block text-sm font-medium mb-1">
                     Due Date
                   </label>
-                  <input
-                    type="date"
-                    name="dueDate"
-                    value={taskForm.dueDate}
-                    onChange={handleTaskFormChange}
-                    className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded focus:outline-none focus:ring-2 focus:ring-green-400 bg-light-bg dark:bg-dark-bg"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type="date"
+                      name="dueDate"
+                      value={taskForm.dueDate}
+                      onChange={handleTaskFormChange}
+                      className="w-full px-3 py-2 pr-10 border border-light-border dark:border-dark-border rounded focus:outline-none focus:ring-2 focus:ring-green-400 bg-light-bg dark:bg-dark-bg"
+                      required
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-gray-500 dark:text-gray-200"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
                 <div className="flex-1">
                   <label className="block text-sm font-medium mb-1">
