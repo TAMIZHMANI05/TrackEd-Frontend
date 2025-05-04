@@ -20,7 +20,7 @@ const TopBar = ({ sidebarExpanded }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center justify-between bg-light-bg dark:bg-dark-bg border-b border-gray-200 dark:border-gray-700 px-4 transition-all rounded-b-2xl shadow-md duration-400
+      className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center justify-between bg-light-bg dark:bg-dark-bg border-b border-x  border-light-border dark:border-dark-border px-4 transition-all rounded-b-2xl shadow-md duration-400
         ${sidebarExpanded ? "md:ml-58" : "md:ml-18"} ml-0
         ${!sidebarExpanded ? "sm:ml-0" : ""}
       `}
@@ -69,7 +69,7 @@ const TopBar = ({ sidebarExpanded }) => {
             </svg>
           </button>
           {open && (
-            <div className="absolute right-0 mt-2 w-56 bg-light-bg dark:bg-dark-card border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg py-2">
+            <div className="absolute right-0 mt-2 w-56 bg-light-bg dark:bg-dark-card border border-light-border dark:border-dark-border rounded-2xl shadow-lg py-2">
               <a
                 href="/profile"
                 className="block px-4 py-2 text-light-text-primary dark:text-dark-text-primary rounded-xl"

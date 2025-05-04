@@ -82,7 +82,7 @@ const Profile = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-5xl bg-light-bg dark:bg-dark-card rounded-lg shadow p-8 mx-auto my-8 flex-1 flex flex-col md:flex-row gap-8">
+      <div className="w-full max-w-5xl bg-light-bg dark:bg-dark-card rounded-lg shadow p-8 mx-auto my-8 flex-1 flex flex-col md:flex-row gap-8 border border-light-border dark:border-dark-border">
         <div className="flex-1">
           <h2 className="text-2xl font-bold mb-6 text-light-primary dark:text-dark-primary">
             Profile

@@ -139,7 +139,7 @@ const CGPATracker = () => {
                 return (
                   <div
                     key={sem}
-                    className={`bg-light-bg dark:bg-dark-card rounded-xl shadow p-6 flex flex-col transition-all duration-300 w-full border border-gray-300 dark:border-gray-700 px-4 py-2 bg-light-bg dark:bg-dark-card ${
+                    className={`bg-light-bg dark:bg-dark-card rounded-xl shadow p-6 flex flex-col transition-all duration-300 w-full border border-light-border dark:border-dark-border px-4 py-2 bg-light-bg dark:bg-dark-card ${
                       expanded === semIdx
                         ? "ring-2 ring-light-primary dark:ring-dark-primary"
                         : ""

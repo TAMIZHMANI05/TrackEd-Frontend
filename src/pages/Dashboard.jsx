@@ -58,27 +58,23 @@ const WelcomeBar = () => {
   );
 
   return (
-    <div className="rounded-2xl bg-gradient-to-r bg-light-bg dark:bg-dark-bg p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg border">
+    <div className="rounded-2xl bg-gradient-to-r bg-light-bg dark:bg-dark-bg p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg border border-light-border dark:border-dark-border">
       <div className="flex-1 min-w-0">
         <div className="text-sm mb-1">{date}</div>
         <div className="text-2xl md:text-3xl font-bold mb-1 flex items-center gap-2">
           Welcome Back, {user.fullName} <span className="text-2xl">👋</span>
         </div>
         <div className="mb-4 text-base">
-          <span className="text-2xl align-top mr-1">“</span>
-          {quote}
-          <span className="text-2xl align-bottom ml-1">”</span>
+          "{quote}"
         </div>
         <div className="flex gap-3 flex-wrap">
-          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border">
-            <span className="text-sm font-medium mb-1">
-              Current CGPA
-            </span>
+          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border border-light-border dark:border-dark-border">
+            <span className="text-sm font-medium mb-1">Current CGPA</span>
             <span className="text-blue-700 text-xl font-bold">
               {user.currentCgpa}
             </span>
           </div>
-          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border">
+          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border border-light-border dark:border-dark-border">
             <span className="text-sm font-medium mb-1">
               Completed Semesters
             </span>
@@ -86,10 +82,8 @@ const WelcomeBar = () => {
               {semestersCompleted}
             </span>
           </div>
-          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border">
-            <span className="text-sm font-medium mb-1">
-              Completed Subjects
-            </span>
+          <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border border-light-border dark:border-dark-border">
+            <span className="text-sm font-medium mb-1">Completed Subjects</span>
             <span className="text-yellow-500 text-xl font-bold flex items-center gap-1">
               <span>{totalSubjects}</span>
             </span>
@@ -228,7 +222,7 @@ const Dashboard = () => {
     <div className="p-6">
       <WelcomeBar />
       <div className="flex flex-col md:flex-row gap-6 w-full justify-center items-stretch">
-        <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow p-4 sm:p-6 flex-1 min-w-0 max-w-full md:min-w-[320px] md:max-w-xl overflow-x-auto border">
+        <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow p-4 sm:p-6 flex-1 min-w-0 max-w-full md:min-w-[320px] md:max-w-xl overflow-x-auto border border-light-border dark:border-dark-border">
           <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
             GPA Progress
           </h2>
@@ -240,7 +234,7 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow p-4 sm:p-6 flex-1 min-w-0 max-w-full md:min-w-[320px] md:max-w-xl overflow-x-auto border">
+        <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow p-4 sm:p-6 flex-1 min-w-0 max-w-full md:min-w-[320px] md:max-w-xl overflow-x-auto border border-light-border dark:border-dark-border">
           <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
             Predicted Progress
           </h2>

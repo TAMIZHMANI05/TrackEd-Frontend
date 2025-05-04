@@ -30,7 +30,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
     <>
       {/* Mobile Hamburger */}
       <button
-        className="md:hidden fixed top-1 left-4 z-40 bg-light-bg dark:bg-dark-bg p-2 rounded-xl shadow border border-gray-200 dark:border-gray-700"
+        className="md:hidden fixed top-1 left-4 z-40 bg-light-bg dark:bg-dark-bg p-2 rounded-xl shadow border border-light-border dark:border-dark-border"
         onClick={() => setMobileOpen((v) => !v)}
         aria-label="Open sidebar"
       >
@@ -38,7 +38,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
       </button>
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full z-30 bg-light-bg dark:bg-dark-bg border-r border-gray-200 dark:border-gray-700 transition-all duration-400
+        className={`fixed top-0 left-0 h-full z-30 bg-light-bg dark:bg-dark-bg border-r border-light-border dark:border-dark-border transition-all duration-400
           ${expanded ? "w-56" : "w-16"}
           ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
           rounded-r-2xl md:rounded-r-2xl shadow-lg md:shadow-xl
@@ -46,7 +46,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
         style={{ minWidth: expanded ? 200 : 64 }}
       >
         <div
-          className={`flex items-center justify-between  md:border-b border-gray-200 dark:border-gray-700 ${
+          className={`flex items-center justify-between  md:border-b border-light-border dark:border-dark-border ${
             expanded ? "px-4" : "p-4"
           }`}
         >
