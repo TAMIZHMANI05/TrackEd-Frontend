@@ -342,13 +342,33 @@ const ProjectManager = () => {
       )}
       {recommendations.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-semibold mb-2">Recommended Projects</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold">Recommended Projects</h2>
+            <button
+              className="text-gray-400 hover:text-gray-700 text-4xl cursor-pointer"
+              onClick={() => setRecommendations([])}
+              title="Dismiss all recommendations"
+            >
+              ×
+            </button>
+          </div>
           <div className="grid gap-4 md:grid-cols-2 ">
             {recommendations.map((proj, i) => (
               <div
                 key={i}
-                className="bg-light-bg dark:bg-dark-bg rounded-xl shadow p-4 border border-light-border dark:border-dark-border"
+                className="bg-light-bg dark:bg-dark-bg rounded-xl shadow p-4 border border-light-border dark:border-dark-border relative"
               >
+                <button
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl cursor-pointer"
+                  onClick={() =>
+                    setRecommendations((prev) =>
+                      prev.filter((_, idx) => idx !== i)
+                    )
+                  }
+                  title="Dismiss this recommendation"
+                >
+                  ×
+                </button>
                 <h3 className="font-bold text-blue-700 mb-1">{proj.title}</h3>
                 <p className="mb-2">{proj.description}</p>
                 <ul className="list-disc ml-5 text-sm">

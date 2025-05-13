@@ -32,7 +32,7 @@ ChartJS.register(
 
 const SEMS = Array.from({ length: 8 }, (_, i) => `Sem ${i + 1}`);
 
-const WelcomeBar = () => {
+const WelcomeBar = ({ projects }) => {
   const [date, setDate] = useState("");
   const { user } = useAuth();
 
@@ -76,7 +76,7 @@ const WelcomeBar = () => {
             </span>
           </div>
           <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border border-light-border dark:border-dark-border">
-            <span className="text-sm font-medium mb-1">
+            <span className="text-sm font-medium mb-1 whitespace-nowrap">
               Completed Semesters
             </span>
             <span className="text-green-600 text-xl font-bold">
@@ -84,9 +84,11 @@ const WelcomeBar = () => {
             </span>
           </div>
           <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border border-light-border dark:border-dark-border">
-            <span className="text-sm font-medium mb-1">Completed Subjects</span>
+            <span className="text-sm font-medium mb-1 whitespace-nowrap">Completed Projects</span>
             <span className="text-yellow-500 text-xl font-bold flex items-center gap-1">
-              <span>{totalSubjects}</span>
+              <span>
+                {projects.filter((p) => p.status === "Completed").length}
+              </span>
             </span>
           </div>
         </div>
@@ -147,15 +149,22 @@ const RecentProjectsTable = ({ projects }) => {
                     </td>
                     <td className="py-2 px-3">
                       <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-semibold 
-                        ${
-                          p.status === "Completed"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            : p.status === "Active"
-                            ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
-                            : "bg-gray-100 text-gray-600 dark:bg-gray-800/60 dark:text-gray-300"
-                        }
-                      `}
+                        className={`px-2 py-0.5 rounded-full text-xs font-semibold
+                          ${
+                            p.status === "Completed"
+                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                              : p.status === "Active"
+                              ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                              : p.status === "On Hold"
+                              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300"
+                              : "bg-gray-100 text-gray-600 dark:bg-gray-800/60 dark:text-gray-300"
+                          }
+                          ${
+                            document.documentElement.classList.contains("dark")
+                              ? ""
+                              : "!text-inherit"
+                          }
+                        `}
                       >
                         {p.status}
                       </span>
@@ -392,7 +401,7 @@ const Dashboard = () => {
     <div className="p-6">
       <div className="flex flex-col md:flex-row gap-6 items-start mb-6">
         <div className="flex-1 min-w-0">
-          <WelcomeBar />
+          <WelcomeBar projects={projects} />
         </div>
         <div className="w-full md:w-auto">
           <RecentProjectsTable projects={recentProjects} />
