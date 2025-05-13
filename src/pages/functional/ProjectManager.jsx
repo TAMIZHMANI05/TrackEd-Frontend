@@ -30,6 +30,9 @@ const initialTask = {
   notes: [],
 };
 
+const allTasksDone = (tasks) =>
+  tasks.length > 0 && tasks.every((t) => t.status === "Done");
+
 const ProjectManager = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,8 +48,20 @@ const ProjectManager = () => {
   const [descModal, setDescModal] = useState({ open: false, desc: "" });
   const [keywordDialog, setKeywordDialog] = useState(false);
   const [projectKeywords, setProjectKeywords] = useState("");
-  const {user,token} = useAuth();
-  
+  const [showResumeWarning, setShowResumeWarning] = useState({
+    open: false,
+    projectId: null,
+  });
+  const [showDeleteProjectPopup, setShowDeleteProjectPopup] = useState({
+    open: false,
+    projectId: null,
+  });
+  const [showDeleteTaskPopup, setShowDeleteTaskPopup] = useState({
+    open: false,
+    project: null,
+    idx: null,
+  });
+  const { user, token } = useAuth();
 
   // Fetch projects from backend
   useEffect(() => {
@@ -72,8 +87,8 @@ const ProjectManager = () => {
       const context = keywords
         ? `${user.course} student. Keywords: ${keywords}`
         : `${user.course} student`;
-        console.log(context);
-        
+      console.log(context);
+
       const res = await axios.post(
         `${API_URL}/gemini/recommend-projects`,
         { context },
@@ -84,6 +99,19 @@ const ProjectManager = () => {
       setRecommendations([]);
     }
     setLoadingRec(false);
+  };
+
+  const resumeProject = async (projectId) => {
+    try {
+      const project = projects.find((p) => p._id === projectId);
+      if (!project) return;
+      await axios.put(
+        `${API_URL}/project/${projectId}`,
+        { ...project, status: "Active" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchProjects();
+    } catch {}
   };
 
   // Project CRUD
@@ -132,12 +160,18 @@ const ProjectManager = () => {
   };
 
   const handleDeleteProject = async (id) => {
-    if (!window.confirm("Delete this project?")) return;
+    setShowDeleteProjectPopup({ open: true, projectId: id });
+  };
+
+  const confirmDeleteProject = async () => {
+    const id = showDeleteProjectPopup.projectId;
+    setShowDeleteProjectPopup({ open: false, projectId: null });
     try {
       await axios.delete(`${API_URL}/project/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchProjects();
+      // Remove the deleted project from state without refetching all projects
+      setProjects((prev) => prev.filter((p) => p._id !== id));
     } catch {}
   };
 
@@ -172,12 +206,20 @@ const ProjectManager = () => {
     } else {
       updatedTasks.push({ ...taskForm });
     }
+    // Prevent auto-completion if project is On Hold
+    const newStatus =
+      selectedProject.status === "On Hold"
+        ? "On Hold"
+        : allTasksDone(updatedTasks)
+        ? "Completed"
+        : selectedProject.status;
     try {
       await axios.put(
         `${API_URL}/project/${selectedProject._id}`,
         {
           ...selectedProject,
           tasks: updatedTasks,
+          status: newStatus,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -188,16 +230,29 @@ const ProjectManager = () => {
     } catch {}
   };
 
-  const handleDeleteTask = async (project, idx) => {
-    if (!window.confirm("Delete this task?")) return;
+  const handleDeleteTask = (project, idx) => {
+    setShowDeleteTaskPopup({ open: true, project, idx });
+  };
+
+  const confirmDeleteTask = async () => {
+    const { project, idx } = showDeleteTaskPopup;
+    setShowDeleteTaskPopup({ open: false, project: null, idx: null });
     const updatedTasks = [...(project.tasks || [])];
     updatedTasks.splice(idx, 1);
+    // Prevent auto-completion if project is On Hold
+    const newStatus =
+      project.status === "On Hold"
+        ? "On Hold"
+        : allTasksDone(updatedTasks)
+        ? "Completed"
+        : project.status;
     try {
       await axios.put(
         `${API_URL}/project/${project._id}`,
         {
           ...project,
           tasks: updatedTasks,
+          status: newStatus,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -206,7 +261,9 @@ const ProjectManager = () => {
       // Update projects state locally instead of refetching all projects
       setProjects((prev) =>
         prev.map((p) =>
-          p._id === project._id ? { ...p, tasks: updatedTasks } : p
+          p._id === project._id
+            ? { ...p, tasks: updatedTasks, status: newStatus }
+            : p
         )
       );
     } catch {}
@@ -358,6 +415,14 @@ const ProjectManager = () => {
                     >
                       <FaTrash />
                     </button>
+                    {project.status === "On Hold" && (
+                      <button
+                        onClick={() => resumeProject(project._id)}
+                        className="text-yellow-600 hover:text-yellow-800 border border-yellow-600 rounded px-2 py-1 text-xs ml-2"
+                      >
+                        Resume
+                      </button>
+                    )}
                   </div>
                 </div>
                 <p className="mb-2">{project.description}</p>
@@ -433,6 +498,13 @@ const ProjectManager = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (project.status === "On Hold") {
+                              setShowResumeWarning({
+                                open: true,
+                                projectId: project._id,
+                              });
+                              return;
+                            }
                             openEditTask(project, task, idx);
                           }}
                           className="text-blue-500 hover:text-blue-700"
@@ -443,6 +515,13 @@ const ProjectManager = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (project.status === "On Hold") {
+                              setShowResumeWarning({
+                                open: true,
+                                projectId: project._id,
+                              });
+                              return;
+                            }
                             handleDeleteTask(project, idx);
                           }}
                           className="text-red-500 hover:text-red-700"
@@ -454,23 +533,43 @@ const ProjectManager = () => {
                           <button
                             onClick={async (e) => {
                               e.stopPropagation();
+                              if (project.status === "On Hold") {
+                                setShowResumeWarning({
+                                  open: true,
+                                  projectId: project._id,
+                                });
+                                return;
+                              }
                               const updatedTasks = [...project.tasks];
                               updatedTasks[idx] = { ...task, status: "Done" };
+                              const newStatus =
+                                project.status === "On Hold"
+                                  ? "On Hold"
+                                  : allTasksDone(updatedTasks)
+                                  ? "Completed"
+                                  : project.status;
                               try {
                                 await axios.put(
                                   `${API_URL}/project/${project._id}`,
-                                  { ...project, tasks: updatedTasks },
+                                  {
+                                    ...project,
+                                    tasks: updatedTasks,
+                                    status: newStatus,
+                                  },
                                   {
                                     headers: {
                                       Authorization: `Bearer ${token}`,
                                     },
                                   }
                                 );
-                                // Update projects state locally instead of refetching all projects
                                 setProjects((prev) =>
                                   prev.map((p) =>
                                     p._id === project._id
-                                      ? { ...p, tasks: updatedTasks }
+                                      ? {
+                                          ...p,
+                                          tasks: updatedTasks,
+                                          status: newStatus,
+                                        }
                                       : p
                                   )
                                 );
@@ -720,6 +819,135 @@ const ProjectManager = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Resume Warning Modal */}
+      {showResumeWarning.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow-lg p-6 w-full max-w-sm relative animate-fade-in-up border border-yellow-400">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl cursor-pointer"
+              onClick={() =>
+                setShowResumeWarning({ open: false, projectId: null })
+              }
+            >
+              ×
+            </button>
+            <h2 className="text-lg font-bold mb-2 text-yellow-700 flex items-center gap-2">
+              <FaInfoCircle className="text-yellow-500" /> Resume Project
+            </h2>
+            <div className="mb-4 text-yellow-700">
+              This project is currently <b>On Hold</b>.<br />
+              Please resume the project before editing, deleting, or completing
+              any tasks.
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                onClick={() =>
+                  setShowResumeWarning({ open: false, projectId: null })
+                }
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 rounded bg-yellow-600 hover:bg-yellow-700 font-semibold text-white"
+                onClick={async () => {
+                  await resumeProject(showResumeWarning.projectId);
+                  setShowResumeWarning({ open: false, projectId: null });
+                }}
+              >
+                Resume Project
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Project Popup */}
+      {showDeleteProjectPopup.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow-lg p-6 w-full max-w-sm relative animate-fade-in-up border border-red-400">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl cursor-pointer"
+              onClick={() =>
+                setShowDeleteProjectPopup({ open: false, projectId: null })
+              }
+            >
+              ×
+            </button>
+            <h2 className="text-lg font-bold mb-2 text-red-700 flex items-center gap-2">
+              <FaTrash className="text-red-500" /> Delete Project
+            </h2>
+            <div className="mb-4 text-red-700">
+              Are you sure you want to delete this project? This action cannot
+              be undone.
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                onClick={() =>
+                  setShowDeleteProjectPopup({ open: false, projectId: null })
+                }
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 font-semibold text-white"
+                onClick={confirmDeleteProject}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Task Popup */}
+      {showDeleteTaskPopup.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-light-bg dark:bg-dark-bg rounded-xl shadow-lg p-6 w-full max-w-sm relative animate-fade-in-up border border-red-400">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl cursor-pointer"
+              onClick={() =>
+                setShowDeleteTaskPopup({
+                  open: false,
+                  project: null,
+                  idx: null,
+                })
+              }
+            >
+              ×
+            </button>
+            <h2 className="text-lg font-bold mb-2 text-red-700 flex items-center gap-2">
+              <FaTrash className="text-red-500" /> Delete Task
+            </h2>
+            <div className="mb-4 text-red-700">
+              Are you sure you want to delete this task? This action cannot be
+              undone.
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                onClick={() =>
+                  setShowDeleteTaskPopup({
+                    open: false,
+                    project: null,
+                    idx: null,
+                  })
+                }
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 font-semibold text-white"
+                onClick={confirmDeleteTask}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

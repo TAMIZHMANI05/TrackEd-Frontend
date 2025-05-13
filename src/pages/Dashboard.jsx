@@ -260,7 +260,7 @@ const Dashboard = () => {
   ).length;
   const activeProjects = projects.filter((p) => p.status === "Active").length;
   const donutData = {
-    labels: ["Active", "Completed", "Other"],
+    labels: ["Active", "Completed", "On Hold"],
     datasets: [
       {
         data: [
@@ -289,7 +289,7 @@ const Dashboard = () => {
   ).length;
   const todoTasks = allTasks.filter((t) => t.status === "To Do").length;
   const pieData = {
-    labels: ["Done", "In Progress", "To Do", "Other"],
+    labels: ["Done", "In Progress", "To Do"],
     datasets: [
       {
         data: [
