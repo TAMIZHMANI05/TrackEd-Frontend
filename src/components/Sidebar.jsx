@@ -16,7 +16,7 @@ const links = [
   { to: "/dashboard", label: "Dashboard", icon: <FiHome /> },
   { to: "/cgpa-tracker", label: "CGPA Tracker", icon: <FiBarChart2 /> },
   { to: "/project-manager", label: "Project Manager", icon: <FiFolder /> },
-  { to: "/ai-insights-tool", label: "AI Insights", icon: <FiCpu /> },
+  { to: "/ai-insights-tool", label: "TrackEd Assistant", icon: <FiCpu /> },
 ];
 
 const Sidebar = ({ expanded, setExpanded }) => {
@@ -58,7 +58,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
             }`}
           />
           <button
-            className="hidden md:block ml-auto cursor-pointer p-2  bg-light-bg dark:bg-dark-bg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="hidden md:block ml-auto cursor-pointer p-2 rounded-xl  bg-light-bg dark:bg-dark-bg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={() => setExpanded((v) => !v)}
             aria-label="Toggle sidebar"
           >

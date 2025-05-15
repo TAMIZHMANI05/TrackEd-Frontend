@@ -64,7 +64,7 @@ const WelcomeBar = ({ projects }) => {
     <div className="rounded-2xl bg-gradient-to-r bg-light-bg dark:bg-dark-bg p-6 flex flex-col md:flex-row items-center justify-between mb-8 shadow-lg border border-light-border dark:border-dark-border">
       <div className="flex-1 min-w-0">
         <div className="text-sm mb-1">{date}</div>
-        <div className="text-2xl md:text-3xl font-bold mb-1 flex items-center gap-2">
+        <div className="text-2xl md:text-2xl font-bold mb-1 flex items-center gap-2">
           Welcome Back, {user.fullName} <span className="text-2xl">👋</span>
         </div>
         <div className="mb-4 text-base">"{quote}"</div>
@@ -84,7 +84,9 @@ const WelcomeBar = ({ projects }) => {
             </span>
           </div>
           <div className="flex-1 min-w-[110px] max-w-xs rounded-lg px-5 py-3 flex flex-col items-center border border-light-border dark:border-dark-border">
-            <span className="text-sm font-medium mb-1 whitespace-nowrap">Completed Projects</span>
+            <span className="text-sm font-medium mb-1 whitespace-nowrap">
+              Completed Projects
+            </span>
             <span className="text-yellow-500 text-xl font-bold flex items-center gap-1">
               <span>
                 {projects.filter((p) => p.status === "Completed").length}
@@ -159,12 +161,26 @@ const RecentProjectsTable = ({ projects }) => {
                               ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300"
                               : "bg-gray-100 text-gray-600 dark:bg-gray-800/60 dark:text-gray-300"
                           }
-                          ${
-                            document.documentElement.classList.contains("dark")
-                              ? ""
-                              : "!text-inherit"
-                          }
                         `}
+                        style={{
+                          color:
+                            p.status === "Completed"
+                              ? "#15803d"
+                              : p.status === "Active"
+                              ? "#1d4ed8"
+                              : p.status === "On Hold"
+                              ? "#b45309"
+                              : "#374151",
+                          backgroundColor:
+                            p.status === "Completed"
+                              ? "#dcfce7"
+                              : p.status === "Active"
+                              ? "#dbeafe"
+                              : p.status === "On Hold"
+                              ? "#fef9c3"
+                              : "#f3f4f6",
+                          border: "1px solid #e5e7eb",
+                        }}
                       >
                         {p.status}
                       </span>
