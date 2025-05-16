@@ -19,6 +19,9 @@ const links = [
   { to: "/ai-insights-tool", label: "TrackEd Assistant", icon: <FiCpu /> },
 ];
 
+import logo from "../assets/images/TrackEd-Logo.svg";
+
+
 const Sidebar = ({ expanded, setExpanded }) => {
   const { logout } = useAuth();
   const location = useLocation();
@@ -51,7 +54,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
           }`}
         >
           <img
-            src="/src/assets/images/TrackEd-Logo.svg"
+            src={logo}
             alt=""
             className={` h-20  transition-all duration-200 ${
               expanded ? "block" : "hidden"

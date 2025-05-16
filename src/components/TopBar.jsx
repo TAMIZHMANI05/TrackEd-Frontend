@@ -2,6 +2,8 @@ import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "../context/AuthContext";
 import { useState, useRef, useEffect } from "react";
 import { FiUser } from "react-icons/fi";
+import logo from "../assets/images/TrackEd-Logo.svg";
+
 
 const TopBar = ({ sidebarExpanded }) => {
   const { user, logout } = useAuth();
@@ -29,8 +31,7 @@ const TopBar = ({ sidebarExpanded }) => {
       {!sidebarExpanded && (
         <div className="flex items-center h-full ">
           <img
-            src="/src/assets/images/TrackEd-Logo.svg"
-            alt="TrackEd Logo"
+            src={logo}
             className="h-18 w-auto"
           />
         </div>

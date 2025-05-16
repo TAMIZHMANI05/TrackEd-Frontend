@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import logo from "../assets/images/TrackEd-Logo.svg";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -13,7 +13,7 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="-mt-5">
             <img
-              src="/src/assets/images/TrackEd-Logo.svg"
+              src={logo}
               alt="TrackEd Logo"
               className="h-30"
             />
