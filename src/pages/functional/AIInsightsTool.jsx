@@ -119,6 +119,7 @@ const AIInsightsTool = () => {
   const [lastAiMsg, setLastAiMsg] = useState("");
   const chatEndRef = useRef(null);
   const [stopRequested, setStopRequested] = useState(false);
+  const [copiedIdx, setCopiedIdx] = useState(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -247,15 +248,23 @@ const AIInsightsTool = () => {
           </div>{" "}
           <div className="flex gap-2 mt-1 mb-2 opacity-100 sm:opacity-0 hover:opacity-100 transition-opacity justify-end max-w-[90vw] sm:max-w-[75%]">
             <button
-              className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 flex items-center"
-              onClick={() => copyToClipboard(msg.text)}
+              className="px-2 py-1 text-xs bg-light-bg dark:bg-dark-bg rounded hover:bg-gray-300 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 flex items-center"
+              onClick={() => {
+                copyToClipboard(msg.text);
+                setCopiedIdx(i);
+                setTimeout(() => setCopiedIdx(null), 1200);
+              }}
               type="button"
               title="Copy"
             >
-              <FaCopy />
+              {copiedIdx === i ? (
+                <FaCheck className="text-green-600" />
+              ) : (
+                <FaCopy />
+              )}
             </button>
             <button
-              className="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-800 rounded hover:bg-yellow-200 dark:hover:bg-yellow-700 border border-yellow-300 dark:border-yellow-600 flex items-center"
+              className="px-2 py-1 text-xs bg-light-bg dark:bg-dark-bg rounded  border dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600  flex items-center"
               onClick={() => handleEditMessage(i, msg.text)}
               type="button"
               title="Edit"
@@ -355,7 +364,7 @@ const AIInsightsTool = () => {
                       <FaCheck /> Send
                     </button>
                     <button
-                      className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-xs hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center gap-1"
+                      className="px-3 py-1 rounded text-white bg-gray-200 dark:bg-gray-700 text-xs hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center gap-1"
                       onClick={handleEditCancel}
                       type="button"
                       title="Cancel"
@@ -378,12 +387,20 @@ const AIInsightsTool = () => {
                   {getMessageContent(msg, i)}{" "}
                   <div className="flex gap-2 mt-1 opacity-100 sm:opacity-0 hover:opacity-100 transition-opacity">
                     <button
-                      className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 flex items-center"
-                      onClick={() => copyToClipboard(msg.text)}
+                      className="px-2 py-1 text-xs bg-light-bg dark:bg-dark-bg rounded hover:bg-gray-300 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 flex items-center"
+                      onClick={() => {
+                        copyToClipboard(msg.text);
+                        setCopiedIdx(i);
+                        setTimeout(() => setCopiedIdx(null), 1200);
+                      }}
                       type="button"
                       title="Copy"
                     >
-                      <FaCopy />
+                      {copiedIdx === i ? (
+                        <FaCheck className="text-green-600" />
+                      ) : (
+                        <FaCopy />
+                      )}
                     </button>
                   </div>
                 </div>
