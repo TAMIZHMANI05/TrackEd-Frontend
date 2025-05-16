@@ -124,35 +124,46 @@ const AIInsightsTool = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
-  const sendMessage = async (e) => {
+  const sendMessage = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
     const userMsg = { sender: "user", text: input };
-    setMessages((msgs) => [...msgs, userMsg]);
-    setInput("");
-    setLoading(true);
-    setTyping(true);
-    try {
-      const API_URL = import.meta.env.VITE_API_URL;
-      const res = await axios.post(
-        `${API_URL}/gemini/ai-chat`,
-        {
-          message: input,
-          history: [...messages, userMsg],
-          userData: user,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setLastAiMsg(res.data.reply);
-      setMessages((msgs) => [...msgs, { sender: "ai", text: res.data.reply }]);
-    } catch (err) {
-      setLastAiMsg("Sorry, I couldn't process your request.");
-      setMessages((msgs) => [
-        ...msgs,
-        { sender: "ai", text: "Sorry, I couldn't process your request." },
-      ]);
-    }
-    setLoading(false);
+    const currentInput = input;
+    setInput(""); // Clear input immediately
+    setMessages((msgs) => {
+      const newMsgs = [...msgs, userMsg];
+      // Start loading and typing right away
+      setLoading(true);
+      setTyping(true);
+      // Fire the async request, using the newMsgs as history
+      (async () => {
+        try {
+          const API_URL = import.meta.env.VITE_API_URL;
+          const res = await axios.post(
+            `${API_URL}/gemini/ai-chat`,
+            {
+              message: currentInput,
+              history: newMsgs,
+              userData: user,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setLastAiMsg(res.data.reply);
+          setMessages((msgs2) => [
+            ...msgs2,
+            { sender: "ai", text: res.data.reply },
+          ]);
+        } catch (err) {
+          setLastAiMsg("Sorry, I couldn't process your request.");
+          setMessages((msgs2) => [
+            ...msgs2,
+            { sender: "ai", text: "Sorry, I couldn't process your request." },
+          ]);
+        }
+        setLoading(false);
+      })();
+      return newMsgs;
+    });
   };
 
   // Stop button handler
@@ -233,8 +244,8 @@ const AIInsightsTool = () => {
             style={{ fontFamily: "inherit", fontSize: "1.05rem" }}
           >
             {msg.text}
-          </div>
-          <div className="flex gap-2 mt-1 mb-2 opacity-0 group-hover/user-msg:opacity-100 transition-opacity justify-end max-w-[90vw] sm:max-w-[75%]">
+          </div>{" "}
+          <div className="flex gap-2 mt-1 mb-2 opacity-100 sm:opacity-0 hover:opacity-100 transition-opacity justify-end max-w-[90vw] sm:max-w-[75%]">
             <button
               className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 flex items-center"
               onClick={() => copyToClipboard(msg.text)}
@@ -265,13 +276,43 @@ const AIInsightsTool = () => {
     setEditIdx(idx);
     setEditValue(text);
   };
-  const handleEditSave = () => {
+  const handleEditSave = async () => {
     if (editIdx !== null && editValue.trim()) {
       setMessages((msgs) => {
         const updatedMsgs = msgs.slice(0, editIdx + 1);
         updatedMsgs[editIdx] = { ...updatedMsgs[editIdx], text: editValue };
         return updatedMsgs;
       });
+
+      // If we're editing a user message, send the edited message to get a new response
+      const editedMsg = { sender: "user", text: editValue };
+      setInput("");
+      setLoading(true);
+      setTyping(true);
+      try {
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await axios.post(
+          `${API_URL}/gemini/ai-chat`,
+          {
+            message: editValue,
+            history: messages.slice(0, editIdx).concat(editedMsg),
+            userData: user,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setLastAiMsg(res.data.reply);
+        setMessages((msgs) => [
+          ...msgs.slice(0, editIdx + 1),
+          { sender: "ai", text: res.data.reply },
+        ]);
+      } catch (err) {
+        setLastAiMsg("Sorry, I couldn't process your request.");
+        setMessages((msgs) => [
+          ...msgs.slice(0, editIdx + 1),
+          { sender: "ai", text: "Sorry, I couldn't process your request." },
+        ]);
+      }
+      setLoading(false);
       setEditIdx(null);
       setEditValue("");
     }
@@ -311,7 +352,7 @@ const AIInsightsTool = () => {
                       type="button"
                       title="Save"
                     >
-                      <FaCheck /> Save
+                      <FaCheck /> Send
                     </button>
                     <button
                       className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-xs hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center gap-1"
@@ -334,8 +375,8 @@ const AIInsightsTool = () => {
                     padding: 0,
                   }}
                 >
-                  {getMessageContent(msg, i)}
-                  <div className="flex gap-2 mt-1 opacity-0 group-hover/ai-msg:opacity-100 transition-opacity">
+                  {getMessageContent(msg, i)}{" "}
+                  <div className="flex gap-2 mt-1 opacity-100 sm:opacity-0 hover:opacity-100 transition-opacity">
                     <button
                       className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 flex items-center"
                       onClick={() => copyToClipboard(msg.text)}
@@ -348,9 +389,7 @@ const AIInsightsTool = () => {
                 </div>
               ) : (
                 <>
-                  <div
-                    style={{ fontFamily: "inherit", fontSize: "1.05rem" }}
-                  >
+                  <div style={{ fontFamily: "inherit", fontSize: "1.05rem" }}>
                     {getMessageContent(msg, i)}
                   </div>
                 </>
@@ -379,7 +418,7 @@ const AIInsightsTool = () => {
             placeholder="Ask me anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            disabled={loading}
+            disabled={loading || typing} // Disable while loading or typing
             autoFocus
           />
           {loading || typing ? (
