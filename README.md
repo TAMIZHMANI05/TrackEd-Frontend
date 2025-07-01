@@ -1,12 +1,58 @@
-# React + Vite
+# TrackEd - Your Academic Journey, Enhanced 🎓
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![TrackEd Logo](src/assets/images/TrackEd-Logo.svg)
 
-Currently, two official plugins are available:
+TrackEd is a comprehensive academic tracking and management platform designed to empower students in their educational journey. Built with modern web technologies and an elegant user interface, TrackEd brings together essential tools for academic success.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+### 📊 CGPA Tracking
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Track your academic performance with precision:
+
+- Semester-by-semester GPA tracking and analysis
+- Cumulative GPA calculation with real-time updates
+- Interactive grade visualization and trend analysis
+- Detailed academic history maintenance
+
+### 📋 Project Management
+
+Streamline your academic projects with powerful tools:
+
+- Create and manage multiple projects simultaneously
+- Set project milestones and deadlines
+- Track progress with intuitive progress bars
+- Project timeline visualization
+
+### 🤖 AI-Powered Insights
+
+Leverage artificial intelligence for academic success:
+
+- Personalized study recommendations based on performance
+- Predictive analysis for course outcomes
+- Smart time management suggestions
+- Performance trend analysis and forecasting
+- Custom learning path recommendations
+- Early warning system for academic challenges
+- AI-driven study schedule optimization
+- Performance benchmarking against goals
+
+## 🚀 Tech Stack
+
+- **Frontend**: React with Vite
+- **Styling**: Tailwind CSS
+- **State Management**: React Context
+- **Authentication**: Custom auth system
+- **Theme Support**: Light/Dark mode
+- **Routing**: React Router
+
+## 📝 License
+
+[MIT License](LICENSE) - Feel free to use this project for personal or commercial purposes.
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit a Pull Request.
+
+---
+
